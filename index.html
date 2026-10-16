@@ -37,15 +37,20 @@ header .sub{color:var(--muted); font-size:12px; margin-top:2px;}
 @media(min-width:900px){ .grid{grid-template-columns:320px 1fr;} .grid.collapsed{grid-template-columns:48px 1fr;} }
 .panel{background:linear-gradient(180deg,rgba(12,20,36,.9),rgba(10,16,30,.9)); border:1px solid var(--line); border-radius:10px; padding:12px; overflow:hidden; min-height:0; display:flex; flex-direction:column; align-self:stretch; box-shadow:0 0 20px rgba(0,229,255,.03) inset;}
 .panel h2{font-size:12px; color:var(--muted); font-weight:600; margin-bottom:8px; letter-spacing:.5px; text-transform:uppercase; padding-left:10px; border-left:3px solid var(--accent);}
+/* 分区标题行：标题靠文字宽度（竖线只贴标题），右侧挂控件 */
+.sec-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;}
+.sec-head .sec-title{font-size:12px; color:var(--muted); font-weight:600; letter-spacing:.5px; text-transform:uppercase; padding-left:10px; border-left:3px solid var(--accent); margin:0; flex:none;}
+.sec-head .sec-ctrl{display:flex; align-items:center; gap:8px; margin-left:auto;}
 /* 大屏模块化卡片 */
-.dash{display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:1fr; gap:10px; flex:1; min-height:0; min-width:0;}
+.dash{display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:minmax(0,1fr); gap:10px; flex:1; min-height:0; min-width:0;}
+.dash > div{min-height:0; min-width:0;}
 .dash .card{background:linear-gradient(180deg,rgba(17,29,53,.8),rgba(12,20,36,.8)); border:1px solid var(--line); border-radius:10px; padding:10px 12px; display:flex; flex-direction:column; overflow:hidden; position:relative; min-width:0;}
 .dash .card::before{content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); opacity:.5;}
 .dash .card .card-t{font-size:11px; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; display:flex; justify-content:space-between; align-items:center; padding-left:10px; border-left:3px solid var(--accent);}
 .fs-btn{background:none; border:1px solid var(--line); color:var(--muted); border-radius:4px; padding:1px 6px; font-size:12px; cursor:pointer;}
 .fs-btn:hover{color:var(--accent); border-color:var(--accent);}
 /* ⛶模式 */
-.card.fs{position:fixed; inset:0; z-index:999; border-radius:0; background:var(--bg);}
+.card.fs{position:fixed; inset:0; z-index:999; border-radius:0; background:var(--bg); overflow-y:auto;}
 .card.fs > *{max-height:none !important; overflow:visible !important;}
 .card.fs #stage{height:100% !important; min-height:0 !important;}
 /* 弹窗 */
@@ -62,15 +67,20 @@ header .sub{color:var(--muted); font-size:12px; margin-top:2px;}
 .dash .c8{grid-column:span 8;}
 .dash .c12{grid-column:span 12;}
 label{display:block; font-size:13px; color:var(--muted); margin:10px 0 5px;}
-select,input{width:100%; background:var(--panel2); border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:8px 10px; font-size:14px; outline:none;}
+select,input:not([type="checkbox"]){width:100%; background:var(--panel2); border:1px solid var(--line); color:var(--txt); border-radius:8px; padding:8px 10px; font-size:14px; outline:none;}
+input[type="checkbox"]{width:auto; accent-color:#22d3ee; cursor:pointer;}
 select:focus,input:focus{border-color:var(--accent2);}
 .small{font-size:12px; color:var(--muted); margin-top:5px;}
-.cta{width:100%; margin-top:16px; padding:12px; border:none; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#000; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 0 20px rgba(0,229,255,.3);}
+.cta{width:100%; margin-top:16px; padding:12px; border:none; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#000; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 0 20px rgba(0,229,255,.3); display:flex; align-items:center; justify-content:center;}
 .cta:hover{filter:brightness(1.1); box-shadow:0 0 30px rgba(0,229,255,.5);}
 .cta.sec{background:var(--panel2); color:var(--txt); margin-top:8px; font-weight:500;}
 
-.table-wrap{overflow:auto; max-width:100%; max-height:220px; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:8px;}
-.table-wrap table{min-width:460px; width:100%; border-collapse:collapse; margin-top:0; font-size:11px;}
+.table-wrap{overflow:auto; max-width:100%; max-height:220px; flex-shrink:0; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:8px;}
+.table-wrap table{min-width:560px; width:100%; border-collapse:collapse; margin-top:0; font-size:11px;}
+/* 表格内输入框：小 padding + 小字号，保证窄列（37px）里数值仍完整可见 */
+#goodsTable input{padding:3px 4px; font-size:11px; min-width:0;}
+/* 左面板内容超高时整体滚动，避免 flex 挤压把货品表格压扁（表现为长宽高"空白"） */
+#leftPanel{overflow-y:auto;}
 th,td{padding:4px 2px; text-align:left; border-bottom:1px solid var(--line); border-right:1px solid #2a3a52;}
 th{color:var(--muted); font-weight:600; white-space:nowrap; font-size:10px; background:#1a2740; position:sticky; top:0;}
 td input{background:transparent; border:1px solid transparent; padding:2px 1px; font-size:11px; border-radius:3px; width:100%; min-width:32px;}
@@ -115,6 +125,14 @@ td .del{background:none;border:none;color:var(--warn);cursor:pointer;font-size:1
 .legend button.it{cursor:pointer; background:transparent; border:1px solid transparent; color:var(--muted); padding:3px 8px; border-radius:6px; font-size:12px;}
 .legend button.it:hover{border-color:var(--line); color:var(--txt);}
 .legend button.it.active{border-color:var(--accent); color:var(--txt); background:rgba(245,158,11,.08);}
+/* 图例联动：装柜顺序表 & 俯视图 的高亮/淡化 */
+#loadOrder tr.ord-hl td{background:rgba(245,158,11,.18);}
+#loadOrder tr.ord-dim{opacity:.38;}
+.tv-layer-hl>.tv-layer-t{color:#fbbf24 !important;}
+.tv-layer-hl>svg{border-color:rgba(245,158,11,.55) !important;}
+.tv-layer-solo>.tv-layer-t{color:#22d3ee !important;}
+.tv-layer-solo>svg{border-color:rgba(34,211,238,.6) !important; box-shadow:0 0 10px rgba(34,211,238,.25);}
+.tv-layer-t{user-select:none;}
 /* 两级图例 */
 .leg-tree{display:block; width:100%; margin-top:4px; max-height:220px; overflow:auto; padding-right:4px;}
 .leg-wb{display:flex; align-items:center; gap:6px; border:1px solid transparent; border-radius:6px; padding:3px 6px; margin-bottom:1px;}
@@ -213,14 +231,36 @@ td .del{background:none;border:none;color:var(--warn);cursor:pointer;font-size:1
         </div>
 
         <div style="flex:1;"></div>
+        <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--muted); margin-bottom:8px; cursor:pointer; line-height:1.6;">
+          <span style="flex:none;">允许纸箱压缩（微形变）</span>
+          <select id="sqzMode" style="flex:1; min-width:0; padding:4px 6px; font-size:12px;">
+            <option value="0">关闭（按原始尺寸）</option>
+            <option value="0.005">允许 0.5%</option>
+            <option value="0.01" selected>允许 1%</option>
+            <option value="0.015">允许 1.5%</option>
+            <option value="0.02">允许 2%</option>
+          </select>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--muted); margin-bottom:10px; cursor:pointer; line-height:1.6;">
+          <input type="checkbox" id="exactMode" checked style="flex:none;">
+          <span style="flex:1; min-width:0;">精算模式：接触面最大化 + 墙体排布法反复重启择优，装得更满<br>（耗时约 2–3 分钟，取消勾选则快速估算）</span>
+        </label>
         <button class="cta" id="calcBtn" onclick="calc()">开始装柜计算</button>
         <button class="fs-btn" onclick="toggleLeft()" id="leftToggle" style="margin-top:8px; width:100%;">◀ 收起面板</button>
       </div>
 
       <div class="panel">
+        <div class="sec-head">
+          <span class="sec-title">总体方案</span>
+          <span class="sec-ctrl" id="algoSelWrap"></span>
+        </div>
         <div id="summaryNote" style="margin-bottom:10px; padding-left:10px; border-left:3px solid var(--accent);"></div>
         <div id="statRow" style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:10px;"></div>
-        <h2>装柜方案 <span style="float:right;" id="cabSelWrap"></span> <span style="float:right; margin-right:8px;" id="algoSelWrap"></span> <span style="float:right; margin-right:8px;" id="cabList"></span></h2>
+        <div class="sec-head">
+          <span class="sec-title">装柜方案</span>
+          <span id="cabSelWrap"></span>
+          <span class="sec-ctrl"><span id="cabList"></span></span>
+        </div>
         <div id="noResult" style="color:var(--muted); font-size:14px; text-align:center; line-height:2; flex:1; display:flex; align-items:center; justify-content:center;">
           填写左侧货品清单后点击「开始装柜计算」<br>系统将用 3D 装箱算法自动排布纸箱并展示结果
         </div>
@@ -228,25 +268,25 @@ td .del{background:none;border:none;color:var(--warn);cursor:pointer;font-size:1
           <div class="dash" style="flex:1; min-height:0;">
             <div class="c8">
               <div class="card" style="height:100%;">
-                <div class="card-t">3D 装柜可视化 <button class="fs-btn" onclick="toggleFs(this)">⛶</button></div>
-                <div id="stage" style="flex:1; position:relative; min-height:300px; background:radial-gradient(ellipse at center,#0a1428 0%,#050810 100%); border:1px solid var(--line); border-radius:8px; overflow:hidden;"><div class="stage-hint" id="stageHint">拖动旋转 · 滚轮缩放 · 右键平移</div><div class="locbar" id="locBar" style="display:none"></div></div>
+                <div class="card-t"><span style="display:flex; align-items:center; gap:8px; min-width:0;">3D 装柜可视化<span id="filterTag" onclick="clearFilter()" title="点击清除检索" style="display:none; align-items:center; gap:5px; padding:2px 5px 2px 9px; font-size:11px; text-transform:none; letter-spacing:0; font-weight:600; background:rgba(245,158,11,.15); border:1px solid var(--accent); border-radius:20px; color:var(--txt); max-width:55%; white-space:nowrap; cursor:pointer;"><span id="filterTagTxt" style="overflow:hidden; text-overflow:ellipsis;"></span><span style="flex:none; width:15px; height:15px; line-height:13px; text-align:center; border-radius:50%; background:rgba(255,255,255,.12); font-size:10px;">✕</span></span></span> <button class="fs-btn" onclick="toggleFs(this)">⛶</button></div>
+                <div id="stage" style="flex:1; position:relative; min-height:300px; background:radial-gradient(ellipse at center,#0a1428 0%,#050810 100%); border:1px solid var(--line); border-radius:8px; overflow:hidden;"><div class="stage-hint" id="stageHint">拖动旋转 · 滚轮缩放 · 右键平移</div></div>
               </div>
             </div>
             <div class="c4">
               <div class="card" style="height:100%;">
-                <div class="card-t">运单图例（点击定位） <button class="fs-btn" onclick="toggleFs(this)">⛶</button></div>
+                <div class="card-t">运单图例（点击定位） <input id="legSearch" placeholder="检索运单/子单…" oninput="filterLegend(this.value)" style="flex:1; min-width:0; margin:0 8px; padding:3px 8px; font-size:11px; background:#0b1628; border:1px solid var(--line); border-radius:6px; color:#e2e8f0; outline:none;"> <button class="fs-btn" onclick="toggleFs(this)">⛶</button></div>
                 <div id="legend" style="overflow-y:auto; flex:1; min-height:0;"></div>
               </div>
             </div>
             <div class="c6">
               <div class="card" style="height:100%;">
-                <div class="card-t">装柜顺序 <button class="fs-btn" onclick="toggleFs(this)">⛶</button></div>
+                <div class="card-t">装柜顺序 <select id="orderSel" onchange="setOrderMode(this.value)" style="flex:1; min-width:0; margin:0 8px; max-width:220px; padding:3px 8px; font-size:11px; background:#0b1628; border:1px solid var(--line); border-radius:6px; color:#e2e8f0; outline:none;"><option value="h">横排：每排横铺宽度 · 从里到外退</option><option value="v">纵排：一条条进深 · 横向推进</option><option value="z">上下排：同位置先码高</option></select> <button class="fs-btn" style="margin-left:auto" onclick="toggleFs(this)">⛶</button></div>
                 <div id="loadOrder" style="overflow-y:auto; flex:1; min-height:0;"></div>
               </div>
             </div>
             <div class="c6">
               <div class="card" style="height:100%;">
-                <div class="card-t">俯视布局（分层） <button class="fs-btn" onclick="toggleFs(this)">⛶</button></div>
+                <div class="card-t">俯视布局（分层） <select id="layerSel" onchange="jumpLayer(this.value)" style="flex:1; min-width:0; margin:0 8px; max-width:170px; padding:3px 8px; font-size:11px; background:#0b1628; border:1px solid var(--line); border-radius:6px; color:#e2e8f0; outline:none;"></select> <button class="fs-btn" style="margin-left:auto" onclick="toggleFs(this)">⛶</button></div>
                 <div id="topView" style="overflow-y:auto; flex:1; min-height:0;"></div>
               </div>
             </div>
@@ -260,7 +300,7 @@ td .del{background:none;border:none;color:var(--warn);cursor:pointer;font-size:1
   <div id="view-howto" class="view" style="display:none;">
     <div class="panel">
       <h2>使用说明</h2>
-      <div class="note" style="margin-top:0; font-size:13px; line-height:1.9;">
+      <div class="note" style="margin-top:0; font-size:13px; line-height:1.9; overflow-y:auto; min-height:0; flex:1; padding-right:8px;">
         <b>这个工具做什么</b><br>
         输入柜型组合（可多条，如 40HQ×2 + 20GP×1）和纸箱货品（长×宽×高×数量×重量×父运单号），系统用 3D 装箱启发式算法把纸箱分配进各柜，给出：用了哪几条柜、每条柜装多少件、体积/重量利用率、运单分布，并用 3D 视图、装柜顺序表和分层俯视图展示摆放。<br><br>
 
@@ -274,22 +314,25 @@ td .del{background:none;border:none;color:var(--warn);cursor:pointer;font-size:1
         ④ <b>混排填充</b>：同一柜内不同运单的箱子混排，小箱自动填入大箱旁边的空隙。<br>
         ⑤ <b>重量校验</b>：累计毛重不超过柜型最大载重（20GP≈28吨、40GP/40HQ/45HQ≈26.5吨），超重标红。<br><br>
 
-        <b>三种算法（可切换对比）</b><br>
-        计算后系统会自动跑三种算法，在「装柜方案」标题右侧的下拉框可切换，每个选项显示该方案的件数/柜数/体积利用率，默认选中最优方案：<br>
-        ① <b>多策略贪心</b>：枚举 5 种排序（体积降序、最大边降序、底面积降序、高度降序、体积升序），瞬间出结果，适合快速估算。<br>
-        ② <b>遗传算法（GA）</b>：以箱子排列顺序为基因，种群进化（OX 交叉 + 交换变异 + 精英保留），利用率通常更高，计算稍慢。<br>
-        ③ <b>模拟退火（SA）</b>：从体积降序出发，通过交换/翻转片段并以一定概率接受更差解来跳出局部最优，随温度下降收敛。<br>
-        说明：3D 装箱是 NP-hard 问题，三种算法均为启发式近似，遗传/模拟退火是"随机搜索"，不保证绝对最优。<br>
-        <b>大数据量处理</b>：计算在 Web Worker 后台线程执行，页面不卡顿；碰撞检测用 1m 空间网格加速。为保证速度，总箱数 &gt;120 时自动缩减遗传/模拟退火迭代与贪心策略，&gt;300 时遗传/模拟退火自动退化为贪心（三者结果一致）；3D 超过 80 箱自动改用 InstancedMesh 合批渲染（1 个绘制调用）。900 箱量级可在约 1 秒内完成。<br><br>
+        <b>求解引擎（可切换对比）</b><br>
+        计算后系统自动跑三层搜索，在「装柜方案」标题右侧的下拉框可切换对比，每个选项显示该方案的件数/柜数/体积利用率，默认选中最优方案：<br>
+        ① <b>组合矩阵贪心</b>：系统在内部自动切换不同的组合方法——枚举「运单排序（体积 / 件数 / 重量 / 最大边 / 体积升序）× 柜分配策略（首个可装即用 / 全柜试装择优）」的完整组合矩阵，逐个试算并保留全局最优，相当于把"换一种排法重算一遍"自动化。<br>
+        ② <b>遗传算法（GA）</b>：先做同型箱合并，以箱型排列为基因进化（OX 交叉 + 交换变异 + 精英保留），在组合矩阵的最优配置上继续精调。<br>
+        ③ <b>模拟退火（SA）</b>：双起点（体积序 / 最大边序）退火，交换与翻转片段扰动，以一定概率接受更差解跳出局部最优，随温度下降收敛。<br>
+        ④ <b>墙体排布法（Wall）</b>：换一种完全不同的思路——不再逐箱找角点，而是沿柜长方向<b>逐层砌墙</b>：每面墙厚度统一，墙的横截面（宽×高）退化成一个 2D 排样问题，用 Skyline / MaxRects 两种 2D 算法取最优；多组排序 × 多次随机重启择优，最后再用角点法把墙缝里的小空隙补满。适合数量多、箱型杂的大批量场景，通常比纯角点法高出 5–10 个百分点。精算模式下还会在单墙收敛后自动尝试<b>双层条带并行</b>变体（上下两条带各自独立选墙深，同段长度的深度选择翻倍），与单墙结果对比取优。最后还有一步<b>驱逐链修复</b>：对仍未装下的箱子做「找空位 / 踢开少量阻挡箱腾位再回填」，只有净增箱数才接受——离线实测可在 800+ 箱的大单上再白捡 1–3 箱。<br>
+        说明：3D 装箱是 NP-hard 问题，四种算法均为启发式近似，遗传/模拟退火/墙体重启是"随机搜索"，不保证绝对最优。<br>
+        <b>允许纸箱压缩</b>：现实中纸箱有微形变余量。选择压缩率后，全箱每维按比例缩小再解算（如 1% → 600×400×400 变 594×396×396），按压缩后尺寸排布与展示。0.5%~2% 通常能显著提高"全部装下"的概率，代价是每件货的尺寸与原单略有出入，适合估算场景，最终以现场实测为准。<br>
+        <b>精算模式</b>（勾选后）：把评估器升级为「六面贴合度最大」的密集模式（bf），并把四个引擎的时间预算拉到 45 秒级、墙体重启次数拉到 14 次，用时间换利用率。大数据量时耗时可达 2–3 分钟，页面不卡顿（后台线程）。<br>
+        <b>大数据量处理</b>：计算在 Web Worker 后台线程执行，页面不卡顿。数量多时自动按<b>箱型</b>而非逐箱搜索——同规格箱子之间的排列顺序对结果毫无影响，合并后搜索空间从 N! 降到箱型数的阶乘（900 箱 10 种箱型 = 只在 10! 空间里搜索），同等时间可探索的组合数量呈数量级增加；柜的分配策略会枚举所有柜试装择优，不再固定"首个能装就用"。碰撞检测用 1m 空间网格加速；3D 超过 80 箱自动改用 InstancedMesh 合批渲染（1 个绘制调用）。900 箱量级可在数秒内完成多轮组合搜索。<br><br>
 
         <b>结果怎么看</b><br>
         ① <b>总体方案</b>（标题下方）：全局摘要 + 已装入/未装下运单列表；<br>
         ② <b>统计卡片</b>：使用柜数、总件数、体积利用率、重量利用率；<br>
         ③ <b>柜选择下拉框</b>：切换柜后，3D、图例、装柜顺序、俯视图全部联动；<br>
         ④ <b>3D 装柜可视化</b>：拖动旋转、滚轮缩放、右键平移；点击图例中的运单可高亮定位；<br>
-        ⑤ <b>运单图例</b>：按父运单着色，展开可看到子单号，点击定位到对应箱子；<br>
-        ⑥ <b>装柜顺序</b>：按"从柜尾往里装、从下往上堆"排序，仓库师傅按表逐件操作；<br>
-        ⑦ <b>俯视布局（分层）</b>：按高度分层显示每层纸箱的平面位置和装柜序号。<br><br>
+        ⑤ <b>运单图例</b>：按父运单着色，展开可看到子单号，点击定位到对应箱子；点击后 <b>3D 视图、装柜顺序表、分层俯视图三处联动</b>——顺序表整行高亮、俯视图对应箱块描边高亮，不在可视区时自动滚动到可视区中部；<br>
+        ⑥ <b>装柜顺序</b>：标题栏下拉可切换解读方式（只改作业编号，不影响摆放结果）——<b>横排</b>（默认：从下往上堆、同层从里到外、每排横着铺满宽度再退）、<b>纵排</b>（同层横向一条条、每条从柜尾往柜口）、<b>上下排</b>（从柜尾到柜口逐截面、每摞从下往上码）；俯视图编号与所选顺序一致；<br>
+        ⑦ <b>俯视布局（分层）</b>：按高度分层，柜尾在上、柜口在下，每排横着画；可用标题栏下拉快速检索/单显某一层（3D 同步只显示该层）。<br><br>
 
         <b>尺寸单位</b><br>
         集装箱内尺寸与纸箱尺寸均以 <b>毫米 mm</b> 为单位；手动录入时可填 cm，系统自动 ×10。<br><br>
@@ -464,6 +507,15 @@ function importExcel(input){
       const sn = wb.SheetNames.find(n=>/子单|明细|清单/i.test(n)) || wb.SheetNames[0];
       const ws=wb.Sheets[sn];
       const rows=XLSX.utils.sheet_to_json(ws,{header:1, raw:true, defval:null});
+      // 表头探测：在前 10 行里找含「长/宽/高」关键字的表头行，自动确定各列位置（不再写死 B/C/D/E）
+      let colWt=1, colL=2, colW=3, colH=4;
+      let detected=false;
+      for(let i=0;i<Math.min(10,rows.length);i++){
+        const r=rows[i]||[];
+        const texts=r.map(c=>c==null?'':String(c));
+        const iL=texts.findIndex(t=>/^长/.test(t.trim())), iW=texts.findIndex(t=>/^宽/.test(t.trim())), iH=texts.findIndex(t=>/^高/.test(t.trim())), iWt=texts.findIndex(t=>/实重|重量/.test(t.trim()));
+        if(iL>0&&iW>0&&iH>0){ colWt=iWt>0?iWt:1; colL=iL; colW=iW; colH=iH; detected=true; break; }
+      }
       const items=[];
       let curWb=null; let seq=0;
       for(let i=0;i<rows.length;i++){
@@ -479,20 +531,27 @@ function importExcel(input){
           curWb=code; seq=0;
           continue;
         }
-        // A 列为空的数据行：B=实重kg, C=长CM, D=宽CM, E=高CM
+        // A 列为空的数据行：按探测到的列取 实重 / 长 / 宽 / 高
         if(!curWb) continue;
-        const wt=r[1], L=r[2], W=r[3], H=r[4];
+        const wt=r[colWt], L=r[colL], W=r[colW], H=r[colH];
         const Ln=parseFloat(L), Wn=parseFloat(W), Hn=parseFloat(H);
         if(!(Ln>0&&Wn>0&&Hn>0)) continue;
         seq++;
         const subid=curWb+'-'+seq+'TM';
         items.push({name:subid, l:Math.round(Ln*10), w:Math.round(Wn*10), h:Math.round(Hn*10), qty:1, wt:parseFloat(wt)||0, waybill:curWb, subid});
       }
-      if(!items.length){ alert('未在 sheet「'+sn+'」中解析到子单数据\n请确认格式：A列父运单号 + B列实重 + C-E列长宽高(CM)'); return; }
+      if(!items.length){
+        const head=(rows.find(r=>r&&r.some(c=>c!=null&&String(c).trim()!==''))||[]).slice(0,6).map(c=>c==null?'·':String(c).slice(0,8)).join(' | ');
+        alert('未在 sheet「'+sn+'」中解析到子单数据\n'
+          +(detected?'':'⚠ 未找到含「长/宽/高」的表头行，已按默认列序 B=实重 C=长 D=宽 E=高 解析\n')
+          +'该表前几列: '+head+'\n'
+          +'请确认格式：A列父运单号（每个运单一行标题），数据行含 实重/长/宽/高 列');
+        return;
+      }
       document.querySelector('#goodsTable tbody').innerHTML='';
       items.forEach(it=>addRow(it));
-      // 自动滚动表格到右侧，展示父运单/子单号列
-      setTimeout(()=>{ const tw=document.querySelector('.table-wrap'); if(tw) tw.scrollLeft=tw.scrollWidth; },50);
+      // 滚回最左，展示 父运单/子单号/长/宽/高 列（这些列在表格左侧）
+      setTimeout(()=>{ const tw=document.querySelector('.table-wrap'); if(tw) tw.scrollLeft=0; },50);
       // 自动开始装柜计算
       setTimeout(()=>calc(), 100);
     }catch(err){
@@ -505,12 +564,17 @@ function importExcel(input){
 }
 
 /* ========== 3D 装箱算法 ==========
-   核心：极值点贪心（Extreme Point，6 朝向）+ 均匀空间哈希加速碰撞。
+   核心：极值点法（Extreme Point，6 朝向）+ 均匀空间哈希加速碰撞。
+   mode='fast' 首个可行点即放（进化筛选用，最快）；
+   mode='ff'  全枚举，z→y→x 最低优先、接触面平局（默认）；
+   mode='bf'  六面接触面积最大优先（精算用，最满最慢）。
+   fixed：已固定放置的箱（不重排，仅作障碍/支撑），用于多运单增量放置。
    上层算法（多策略贪心 / 遗传 / 模拟退火）只负责搜索最优顺序。 */
-function packOrder(container, units, order){
+function packOrder(container, units, order, fixed, mode){
   const L=container.L, W=container.W, H=container.H;
-  const placed=[];
+  const placed=fixed?fixed.slice():[];
   let vol=0;
+  for(const b of placed) vol+=b.l*b.w*b.h;
   const CS=1000; // 空间网格单元 1m
   const grid=new Map();
   const ck=(ix,iy,iz)=>ix+'|'+iy+'|'+iz;
@@ -522,6 +586,7 @@ function packOrder(container, units, order){
       const k=ck(ix,iy,iz); let arr=grid.get(k); if(!arr){arr=[];grid.set(k,arr);} arr.push(b);
     }
   }
+  for(const b of placed) regBox(b);
   function collides(x,y,z,o){
     const ix0=Math.floor(x/CS),ix1=Math.floor((x+o.l-0.001)/CS);
     const iy0=Math.floor(y/CS),iy1=Math.floor((y+o.w-0.001)/CS);
@@ -534,24 +599,117 @@ function packOrder(container, units, order){
     }
     return false;
   }
-  let eps=[{x:0,y:0,z:0}]; // 极值点
-  for(const k of order){
-    const u=units[k];
-    const oris=orientations(u);
-    let best=null;
-    for(const p of eps){
-      for(const o of oris){
-        if(p.x+o.l>L+0.01||p.y+o.w>W+0.01||p.z+o.h>H+0.01) continue;
-        if(collides(p.x,p.y,p.z,o)) continue;
-        const score=p.z*1e12+p.y*1e6+p.x;
-        if(!best||score<best.score){ best={x:p.x,y:p.y,z:p.z,o,score}; }
-        break; // 该点第一个可行朝向即可
+  // 接触面（下方支撑 + 靠墙），用空间哈希只查正下方，避免 O(n) 扫描
+  function contact(x,y,z,o){
+    let c=0;
+    if(z<1) c+=o.l*o.w;
+    else{
+      const iz=Math.floor((z-0.001)/CS);
+      const ix0=Math.floor(x/CS),ix1=Math.floor((x+o.l-0.001)/CS);
+      const iy0=Math.floor(y/CS),iy1=Math.floor((y+o.w-0.001)/CS);
+      for(let ix=ix0;ix<=ix1;ix++)for(let iy=iy0;iy<=iy1;iy++){
+        const arr=grid.get(ck(ix,iy,iz)); if(!arr) continue;
+        for(const b of arr){
+          if(Math.abs((b.z+b.h)-z)<1){
+            const ox=Math.min(x+o.l,b.x+b.l)-Math.max(x,b.x);
+            const oy=Math.min(y+o.w,b.y+b.w)-Math.max(y,b.y);
+            if(ox>0&&oy>0) c+=ox*oy;
+          }
+        }
       }
     }
-    if(!best) return {ok:false, boxes:placed, n:placed.length, vol};
-    const {o}=best;
+    if(x<1) c+=o.w*o.h*0.3;
+    if(y<1) c+=o.l*o.h*0.3;
+    return c;
+  }
+  // 精算用：全向接触面 = 下方支撑 + 侧向贴合（±x/±y 相邻箱）+ 靠墙
+  function contactFull(x,y,z,o){
+    let c=contact(x,y,z,o);
+    const ix0=Math.floor((x-1)/CS),ix1=Math.floor((x+o.l)/CS);
+    const iy0=Math.floor((y-1)/CS),iy1=Math.floor((y+o.w)/CS);
+    const iz0=Math.floor(z/CS),iz1=Math.floor((z+o.h-0.001)/CS);
+    for(let ix=ix0;ix<=ix1;ix++)for(let iy=iy0;iy<=iy1;iy++)for(let iz=iz0;iz<=iz1;iz++){
+      const arr=grid.get(ck(ix,iy,iz)); if(!arr) continue;
+      for(const b of arr){
+        if(Math.abs((b.x+b.l)-x)<0.5 || Math.abs((x+o.l)-b.x)<0.5){
+          const oy=Math.min(y+o.w,b.y+b.w)-Math.max(y,b.y);
+          const oz=Math.min(z+o.h,b.z+b.h)-Math.max(z,b.z);
+          if(oy>0&&oz>0) c+=oy*oz;
+        }
+        if(Math.abs((b.y+b.w)-y)<0.5 || Math.abs((y+o.w)-b.y)<0.5){
+          const ox=Math.min(x+o.l,b.x+b.l)-Math.max(x,b.x);
+          const oz=Math.min(z+o.h,b.z+b.h)-Math.max(z,b.z);
+          if(ox>0&&oz>0) c+=ox*oz;
+        }
+      }
+    }
+    return c;
+  }
+  let eps=[{x:0,y:0,z:0}]; // 极值点
+  // fixed 箱产生的极值点（三个面的投影点）
+  for(const b of placed){
+    for(const p of [{x:b.x+b.l,y:b.y,z:b.z},{x:b.x,y:b.y+b.w,z:b.z},{x:b.x,y:b.y,z:b.z+b.h}]){
+      if(p.x<L+0.01&&p.y<W+0.01&&p.z<H+0.01&&!collides(p.x,p.y,p.z,{l:1,w:1,h:1})) eps.push(p);
+    }
+  }
+  const fixedN=placed.length;
+  let placedNew=0;
+  for(const k of order){
+    const u=units[k];
+    const oris=u._oris||(u._oris=orientations(u));
+    let best=null;
+    if(mode==='bf'){
+      // 接触面积最大优先；平局时 z→y→x 最低。扫描点上限/排序可用 container._bfScan/_bfSort 调
+      const scan= container._bfSort==='xzy'
+        ? eps.slice().sort((a,b)=>a.x-b.x||a.z-b.z||a.y-b.y)
+        : eps.slice().sort((a,b)=>a.z-b.z||a.y-b.y||a.x-b.x);
+      const lim=Math.min(scan.length, container._bfScan||220);
+      let bestScore=-Infinity;
+      for(let pi=0;pi<lim;pi++){
+        const p=scan[pi];
+        for(const o of oris){
+          if(p.x+o.l>L+0.01||p.y+o.w>W+0.01||p.z+o.h>H+0.01) continue;
+          if(collides(p.x,p.y,p.z,o)) continue;
+          const score=contactFull(p.x,p.y,p.z,o)*1e13 - p.z*1e8 - p.y*1e4 - p.x;
+          if(score>bestScore){ bestScore=score; best={x:p.x,y:p.y,z:p.z,o:o}; }
+        }
+      }
+    } else if(mode==='fast'){
+      // 首个可行点即放；点按 z,y,x 升序，通常前几～几十个即命中，速度数倍于无序扫描
+      const scan=eps.slice().sort((a,b)=>a.z-b.z||a.y-b.y||a.x-b.x);
+      outer:
+      for(const p of scan){
+        for(const o of oris){
+          if(p.x+o.l>L+0.01||p.y+o.w>W+0.01||p.z+o.h>H+0.01) continue;
+          if(collides(p.x,p.y,p.z,o)) continue;
+          best={x:p.x,y:p.y,z:p.z,o:o};
+          break outer;
+        }
+      }
+    } else {
+      // ff：枚举全部(点,朝向)，先保证 z→y→x 最低，同位置时取接触面最大的朝向
+      for(const p of eps){
+        for(const o of oris){
+          if(p.x+o.l>L+0.01||p.y+o.w>W+0.01||p.z+o.h>H+0.01) continue;
+          if(collides(p.x,p.y,p.z,o)) continue;
+          const cand={x:p.x,y:p.y,z:p.z,ct:contact(p.x,p.y,p.z,o),o};
+          if(!best){best=cand;}
+          else{
+            const better=
+              p.z<best.z-0.5 ||
+              (Math.abs(p.z-best.z)<0.5 && p.y<best.y-0.5) ||
+              (Math.abs(p.z-best.z)<0.5 && Math.abs(p.y-best.y)<0.5 && p.x<best.x-0.5) ||
+              (Math.abs(p.z-best.z)<0.5 && Math.abs(p.y-best.y)<0.5 && Math.abs(p.x-best.x)<0.5 && cand.ct>best.ct);
+            if(better) best=cand;
+          }
+        }
+      }
+    }
+    // 放不下的箱跳过，继续尝试后续箱（后续小箱可能能塞进口袋）
+    if(!best) continue;
+    const o=best.o;
     const box={x:best.x,y:best.y,z:best.z,l:o.l,w:o.w,h:o.h,color:u.color,name:u.name,wt:u.wt||0,waybill:u.waybill||'',subid:u.subid||'',u:u};
-    placed.push(box); vol+=o.l*o.w*o.h; regBox(box);
+    placed.push(box); placedNew++; vol+=o.l*o.w*o.h; regBox(box);
     // 被新盒占据的极值点投影到新盒三个面
     const next=[];
     for(const e of eps){
@@ -568,10 +726,11 @@ function packOrder(container, units, order){
       if(!seen.has(kk)){seen.add(kk);eps.push(e);}
     }
   }
-  return {ok:true, boxes:placed, n:placed.length, vol};
+  // n/vol 含 fixed（跨柜比较时倾向并入已满柜）；ok 只考核本次新放的箱
+  return {ok:placedNew===units.length, boxes:placed, n:placed.length, vol};
 }
 function fitOf(r){ return r.n*1e18 + r.vol; }
-/* 多策略贪心：5 种排序取最优；大数据量时只跑前 2 种主策略 */
+/* 多策略贪心：5 种排序取最优；大数据量时只跑前 2 种主策略（ff 评估器） */
 function packGreedy(container, units, totalN){
   let strategies=[
     (a,b)=>(b.l*b.w*b.h)-(a.l*a.w*a.h),
@@ -584,96 +743,544 @@ function packGreedy(container, units, totalN){
   let best=null;
   for(const fn of strategies){
     const order=units.map((_,i)=>i).sort((i,j)=>fn(units[i],units[j]));
-    const r=packOrder(container, units, order);
+    const r=packOrder(container, units, order, null, 'ff');
     if(!best||fitOf(r)>fitOf(best)) best=r;
   }
   return best;
 }
-/* 遗传算法：顺序编码 + OX 交叉 + 交换变异 */
-function packGA(container, units, totalN){
+/* ========== 混排墙体法（wall building）==========
+   思路：沿柜长方向逐面墙推进，每面墙统一深度 d，墙内 W×H 截面用 2D 装箱填充。
+   这正好复现真实装柜的"打墙"手法——同深度的纸箱排成一堵墙、墙与墙之间不留缝，
+   对"箱数多、规格相近"的货（如子单导出数据）填充率明显高于逐箱极值点法。 */
+function mulberry32(seed){
+  let a=seed>>>0;
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    let t=Math.imul(a^a>>>15, 1|a);
+    t=t+Math.imul(t^t>>>7, 61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+/* 2D Skyline：rects=[{w,h}] 装入 W×H，返回 [{y,z,w,h,ref}] */
+function skyline2D(W,H,rects,orderKey,rng,rule){
+  let sky=[{y:0,z:0,w:W}];
+  const placed=[];
+  function mergeSky(){
+    sky.sort((a,b)=>a.y-b.y);
+    const out=[];
+    for(const s of sky){
+      const last=out[out.length-1];
+      if(last && Math.abs(last.z-s.z)<0.01 && Math.abs(last.y+last.w-s.y)<0.01) last.w+=s.w;
+      else out.push({y:s.y,z:s.z,w:s.w});
+    }
+    sky=out;
+  }
+  let order;
+  if(orderKey==='keep') order=rects.slice();
+  else if(orderKey==='height') order=rects.slice().sort((a,b)=>Math.max(b.w,b.h)-Math.max(a.w,a.h));
+  else if(orderKey==='width') order=rects.slice().sort((a,b)=>Math.min(b.w,b.h)-Math.min(a.w,a.h));
+  else if(orderKey==='perim') order=rects.slice().sort((a,b)=>(b.w+b.h)-(a.w+a.h));
+  else if(orderKey==='rand'){
+    order=rects.slice();
+    for(let i=order.length-1;i>0;i--){ const j=Math.floor((rng?rng():Math.random())*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+  }
+  else order=rects.slice().sort((a,b)=>b.w*b.h-a.w*a.h);
+  for(const r of order){
+    let best=null, bestScore=Infinity;
+    for(const cand of [{w:r.w,h:r.h},{w:r.h,h:r.w}]){
+      for(let si=0;si<sky.length;si++){
+        const y0=sky[si].y;
+        if(y0+cand.w>W+0.01) continue;
+        let top=0;
+        for(const s of sky){
+          if(s.y>=y0+cand.w-0.01||s.y+s.w<=y0+0.01) continue;
+          if(s.z>top) top=s.z;
+        }
+        if(top+cand.h>H+0.01) continue;
+        let waste=0;
+        if(rule!=='bl'){
+          for(const s of sky){
+            if(s.y>=y0+cand.w-0.01||s.y+s.w<=y0+0.01) continue;
+            const ov=Math.min(y0+cand.w,s.y+s.w)-Math.max(y0,s.y);
+            if(ov>0) waste+=(top-s.z)*ov;
+          }
+        }
+        const score = rule==='bl' ? top*1e9+y0 : (top+cand.h)*1e9+waste*1e3+y0;
+        if(score<bestScore){ bestScore=score; best={y0:y0,top:top,w:cand.w,h:cand.h}; }
+      }
+    }
+    if(!best) continue;
+    placed.push({y:best.y0,z:best.top,w:best.w,h:best.h,ref:r.ref});
+    const seg={y:best.y0,z:best.top+best.h,w:best.w};
+    const next=[];
+    for(const s of sky){
+      if(s.y>=seg.y+seg.w-0.01||s.y+s.w<=seg.y+0.01){ next.push(s); continue; }
+      if(s.y<seg.y-0.01) next.push({y:s.y,z:s.z,w:seg.y-s.y});
+      if(s.y+s.w>seg.y+seg.w+0.01) next.push({y:seg.y+seg.w,z:s.z,w:s.y+s.w-seg.y-seg.w});
+    }
+    next.push(seg);
+    sky=next; mergeSky();
+  }
+  return placed;
+}
+/* 2D MaxRects：自由矩形表法，填充率通常高于 skyline */
+function maxRects2D(W,H,rects,orderKey,fitRule,rng){
+  let free=[{x:0,y:0,w:W,h:H}];
+  const placed=[];
+  let order;
+  if(orderKey==='keep') order=rects.slice();
+  else if(orderKey==='height') order=rects.slice().sort((a,b)=>Math.max(b.w,b.h)-Math.max(a.w,a.h));
+  else if(orderKey==='width') order=rects.slice().sort((a,b)=>Math.min(b.w,b.h)-Math.min(a.w,a.h));
+  else if(orderKey==='perim') order=rects.slice().sort((a,b)=>(b.w+b.h)-(a.w+a.h));
+  else if(orderKey==='rand'){
+    order=rects.slice();
+    for(let i=order.length-1;i>0;i--){ const j=Math.floor((rng?rng():Math.random())*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+  }
+  else order=rects.slice().sort((a,b)=>b.w*b.h-a.w*a.h);
+  for(const r of order){
+    let best=null, bestKey=Infinity;
+    for(const cand of [{w:r.w,h:r.h},{w:r.h,h:r.w}]){
+      for(const f of free){
+        if(f.w<cand.w-0.01||f.h<cand.h-0.01) continue;
+        const lh=Math.abs(f.w-cand.w), lv=Math.abs(f.h-cand.h);
+        const shortSide=Math.min(lh,lv), longSide=Math.max(lh,lv);
+        const key=(fitRule==='area')?(f.w*f.h-cand.w*cand.h)*1e6+shortSide:shortSide*1e6+longSide;
+        if(key<bestKey){ bestKey=key; best={f:f,w:cand.w,h:cand.h}; }
+      }
+    }
+    if(!best) continue;
+    placed.push({y:best.f.x,z:best.f.y,w:best.w,h:best.h,ref:r.ref});
+    const p={x:best.f.x,y:best.f.y,w:best.w,h:best.h};
+    const next=[];
+    for(const f of free){
+      if(!(p.x<f.x+f.w-0.01&&p.x+p.w>f.x+0.01&&p.y<f.y+f.h-0.01&&p.y+p.h>f.y+0.01)){ next.push(f); continue; }
+      if(p.x>f.x+0.01) next.push({x:f.x,y:f.y,w:p.x-f.x,h:f.h});
+      if(p.x+p.w<f.x+f.w-0.01) next.push({x:p.x+p.w,y:f.y,w:f.x+f.w-p.x-p.w,h:f.h});
+      if(p.y>f.y+0.01) next.push({x:f.x,y:f.y,w:f.w,h:p.y-f.y});
+      if(p.y+p.h<f.y+f.h-0.01) next.push({x:f.x,y:p.y+p.h,w:f.w,h:f.y+f.h-p.y-p.h});
+    }
+    free=next.filter(function(a){
+      for(const b of next){
+        if(a===b) continue;
+        if(b.x<=a.x+0.01&&b.y<=a.y+0.01&&b.x+b.w>=a.x+a.w-0.01&&b.y+b.h>=a.y+a.h-0.01) return false;
+      }
+      return true;
+    });
+  }
+  return placed;
+}
+/* 2D 结果重叠自检（防御：任何一块截面重叠都会导致 3D 箱子互相穿模） */
+function plOverlap2D(pl){
+  for(let i=0;i<pl.length;i++) for(let j=i+1;j<pl.length;j++){
+    const a=pl[i], b=pl[j];
+    if(a.y<b.y+b.w-0.01 && a.y+a.w>b.y+0.01 && a.z<b.z+b.h-0.01 && a.z+a.h>b.z+0.01) return true;
+  }
+  return false;
+}
+/* 单面墙的 2D 填充：多排序 × 两种算法取截面面积最大（跳过有重叠的结果） */
+function packWall2D(W,H,rects,rng){
+  const keys=['area','height','width','perim','rand','rand'];
+  let best=null, bestArea=-1;
+  for(const k of keys){
+    const cand=[maxRects2D(W,H,rects,k,'short',rng), maxRects2D(W,H,rects,k,'area',rng), skyline2D(W,H,rects,k,rng,'bl')];
+    for(const pl of cand){
+      let a=0; for(const p of pl) a+=p.w*p.h;
+      if(a<=bestArea) continue;
+      if(plOverlap2D(pl)) continue;
+      bestArea=a; best=pl;
+    }
+  }
+  return best||[];
+}
+/* 墙体法主流程：每步枚举候选墙深，按"截面填充率最高"选墙（同分取体积大），jitter 时前 3 优随机挑 */
+function packWalls(container, units, rng, jitter){
+  const L=container.L, W=container.W, H=container.H;
+  const tmap=new Map();
+  for(const u of units){
+    const k=u.l+'_'+u.w+'_'+u.h+'_'+(u.wt||0);
+    let t=tmap.get(k);
+    if(!t){ t={dims:[u.l,u.w,u.h],count:0,pool:[]}; tmap.set(k,t); }
+    t.count++; t.pool.push(u);
+  }
+  const types=Array.from(tmap.values());
+  const boxes=[];
+  let X=0, guard=0;
+  while(types.some(t=>t.count>0) && guard++<200){
+    const dimSet=new Set();
+    for(const t of types) if(t.count>0) for(const d of t.dims) dimSet.add(d);
+    const cands=[];
+    for(const d of dimSet){
+      if(X+d>L+0.01) continue;
+      const rects=[];
+      let avail=0;
+      for(const t of types){
+        if(t.count<=0) continue;
+        const di=t.dims.indexOf(d);
+        if(di<0) continue;
+        const cross=t.dims.filter((_,i)=>i!==di);
+        for(let i=0;i<t.count;i++){
+          const rect={w:cross[0],h:cross[1],ti:types.indexOf(t),di:di};
+          rect.ref=rect;
+          rects.push(rect);
+        }
+        avail+=cross[0]*cross[1]*t.count;
+      }
+      if(!rects.length) continue;
+      if(avail<W*H*0.6) continue; // 面积不足的深度直接跳过（省 90% 计算）
+      const pl=packWall2D(W,H,rects,rng);
+      if(!pl.length) continue;
+      let area=0; for(const p of pl) area+=p.w*p.h;
+      const ratio=area/(W*H);
+      cands.push({d:d, pl:pl, score:ratio*1e12+area*d, ratio:ratio});
+    }
+    if(!cands.length) break;
+    cands.sort((a,b)=>b.score-a.score);
+    const wall = (jitter && cands.length>1) ? cands[Math.floor(rng()*Math.min(3,cands.length))] : cands[0];
+    for(const p of wall.pl){
+      const t=types[p.ref.ti], di=p.ref.di;
+      // 关键：墙沿 x 轴推进，箱子的 x 尺寸必须是墙深 d(=t.dims[di])；
+      // 截面(y,z) 尺寸就是 2D 排样给出的 (p.w, p.h)（2D 排样只允许两种朝向，故必为剩余两维之一）
+      const u=t.pool.pop();
+      t.count--;
+      if(!u) continue;
+      boxes.push({x:X,y:p.y,z:p.z,l:t.dims[di],w:p.w,h:p.h,color:u.color,name:u.name,wt:u.wt||0,waybill:u.waybill||'',subid:u.subid||'',u:u});
+    }
+    X+=wall.d;
+  }
+  let vol=0; for(const b of boxes) vol+=b.l*b.w*b.h;
+  return {ok:boxes.length===units.length, boxes:boxes, n:boxes.length, vol:vol, usedX:X};
+}
+/* 条带并行墙体法：沿高度切两条带，各自独立推进、各自选墙深。
+   动机：单墙只能用「深度恰好等于 d」的箱子，后期池子碎片化填充率掉到 78%；
+   两条带深度各自独立 → 同一段长度上深度选择翻倍。代价是截面变小、边界损耗增加，
+   实测切点取 0.465×H 附近最优（40HQ 上比单墙多装 2 箱），3 条带反而更差。 */
+function packStrips(container, units, rng, jitter, splitZ){
+  const L=container.L, W=container.W, H=container.H;
+  const tmap=new Map();
+  for(const u of units){
+    const k=u.l+'_'+u.w+'_'+u.h+'_'+(u.wt||0);
+    let t=tmap.get(k); if(!t){ t={dims:[u.l,u.w,u.h],count:0,pool:[]}; tmap.set(k,t); }
+    t.count++; t.pool.push(u);
+  }
+  const types=Array.from(tmap.values());
+  const bands=[{off:0,size:splitZ,x:0},{off:splitZ,size:H-splitZ,x:0}];
+  const boxes=[];
+  let guard=0;
+  while(types.some(t=>t.count>0) && guard++<600){
+    const dimSet=new Set();
+    for(const t of types) if(t.count>0) for(const d of t.dims) dimSet.add(d);
+    const cands=[];
+    for(let bi=0;bi<bands.length;bi++){
+      const bd=bands[bi];
+      if(bd.x>=L-0.01) continue;
+      for(const d of dimSet){
+        if(bd.x+d>L+0.01) continue;
+        const rects=[]; let avail=0;
+        for(let ti=0;ti<types.length;ti++){
+          const t=types[ti]; if(t.count<=0) continue;
+          const di=t.dims.indexOf(d); if(di<0) continue;
+          const cross=t.dims.filter((_,i)=>i!==di);
+          for(let i=0;i<t.count;i++){ const r={w:cross[0],h:cross[1],ti:ti,di:di}; r.ref=r; rects.push(r); }
+          avail+=cross[0]*cross[1]*t.count;
+        }
+        if(!rects.length) continue;
+        if(avail<W*bd.size*0.5) continue;
+        const pl=packWall2D(W,bd.size,rects,rng);
+        if(!pl.length) continue;
+        let area=0; for(const p of pl) area+=p.w*p.h;
+        cands.push({bi:bi,d:d,pl:pl,score:area});
+      }
+    }
+    if(!cands.length) break;
+    cands.sort((a,b)=>b.score-a.score);
+    const wall=(jitter&&cands.length>1)?cands[Math.floor(rng()*Math.min(3,cands.length))]:cands[0];
+    const bd=bands[wall.bi];
+    for(const p of wall.pl){
+      const t=types[p.ref.ti], di=p.ref.di;
+      const u=t.pool.pop(); t.count--; if(!u) continue;
+      boxes.push({x:bd.x,y:p.y,z:bd.off+p.z,l:t.dims[di],w:p.w,h:p.h,color:u.color,name:u.name,wt:u.wt||0,waybill:u.waybill||'',subid:u.subid||'',u:u});
+    }
+    bd.x+=wall.d;
+  }
+  let vol=0; for(const b of boxes) vol+=b.l*b.w*b.h;
+  return {ok:boxes.length===units.length, boxes:boxes, n:boxes.length, vol:vol};
+}
+/* 墙体法 + 尾部空隙填充：剩余箱用极值点法塞进墙内空隙与末端余量。
+   前 60% 预算跑整截面单墙（收敛快），之后交替混入「双条带并行」变体增加结构多样性，全程取全局最优 */
+function packWallsTail(container, units, deadline, restartsMax){
+  let best=null;
+  const maxR=restartsMax||(deadline?10:1);
+  const stripOK=container.H>=900;
+  const t0=Date.now();
+  const wallUntil=deadline ? t0+(deadline-t0)*0.6 : null;
+  for(let i=0;i<maxR;i++){
+    const rng=mulberry32(1000+i*7919);
+    const stripNow=stripOK && wallUntil && Date.now()>=wallUntil && i%2===1;
+    let r;
+    if(stripNow){
+      const sp=Math.round(container.H*(0.465+0.0015*(((i>>1)%5)-2)));
+      r=packStrips(container, units, rng, true, Math.max(250,Math.min(container.H-250,sp)));
+    }else{
+      r=packWalls(container, units, rng, i>0);
+    }
+    const placedSet=new Set(r.boxes.map(b=>b.u));
+    const remaining=units.filter(u=>!placedSet.has(u));
+    if(remaining.length && r.boxes.length){
+      const cabBF=Object.assign({}, container, {_bfScan:99999});
+      const desc=remaining.map((_,i)=>i).sort((a,b)=>(remaining[b].l*remaining[b].w*remaining[b].h)-(remaining[a].l*remaining[a].w*remaining[a].h));
+      let er=packOrder(cabBF, remaining, desc, r.boxes, 'bf');
+      const asc=desc.slice().reverse();
+      const er2=packOrder(cabBF, remaining, asc, r.boxes, 'bf');
+      if(er2.boxes.length>er.boxes.length) er=er2;
+      r.boxes=er.boxes;
+      r.n=er.n; r.vol=er.vol; r.ok=er.ok;
+    }
+    if(!best || fitOf(r)>fitOf(best)) best=r;
+    if(deadline && Date.now()>deadline) break;
+  }
+  return best;
+}
+
+/* 遗传算法：顺序编码 + OX 交叉 + 交换变异；deadline 毫秒时间戳，超时即停。
+   进化阶段用 'fast' 评估器快速筛选；结束后精英基因用 mode 指定的精算评估器重排取最优 */
+function packGA(container, units, totalN, deadline, mode){
   const n=units.length;
-  // 大数据量降级：直接用贪心，避免 GA 阻塞
-  if((totalN||n)>300) return packGreedy(container, units, totalN);
-  const volIdx=units.map((_,i)=>i).sort((a,b)=>(units[b].l*units[b].w*units[b].h)-(units[a].l*units[a].w*units[a].h));
-  const big=(totalN||n)>120;
-  const popN=big?8:Math.min(24, Math.max(8, 8+Math.floor(n*0.4)));
-  const gens=big?6:Math.min(50, Math.max(12, 12+Math.floor(n*0.25)));
+  const tn=totalN||n;
+  // 时间预算已用完：立即降级贪心，避免多运单逐票重排时反复超时
+  if(deadline && Date.now()>deadline) return packGreedy(container, units, tn);
+  // 精算模式预留末段给精英重排；预留量不得超过预算的一半，避免预算小时一次都不进化
+  const evolveReserve=(deadline && mode==='bf') ? Math.min(35000, Math.max(0,(deadline-Date.now()))*0.4) : 0;
+  const evolveDeadline=deadline ? deadline-evolveReserve : null;
+  const types=buildTypes(units);
+  const useTypes = types.length<n && types.length>=2;
+  const g=useTypes?types.length:n;   // 基因长度：箱型数 或 箱数
+  const arr=useTypes?types:units;
+  const evalFast=function(gene){
+    return useTypes ? packSeq(container, expandTypes(types,gene), 'fast') : packOrder(container, units, gene, null, 'fast');
+  };
+  const evalFine=function(gene){
+    return useTypes ? packSeq(container, expandTypes(types,gene), mode) : packOrder(container, units, gene, null, mode);
+  };
+  const volIdx=arr.map((_,i)=>i).sort((a,b)=>(arr[b].l*arr[b].w*arr[b].h)-(arr[a].l*arr[a].w*arr[a].h));
+  const big=tn>120;
+  const popN=big?10:Math.min(24, Math.max(8, 8+Math.floor(g*0.4)));
+  const gens=big?100000:Math.min(60, Math.max(12, 12+Math.floor(g*0.25))); // 大数据靠时间预算收敛
   const pop=[volIdx.slice()];
   for(let i=1;i<popN;i++){
     const p=volIdx.slice();
     for(let k=p.length-1;k>0;k--){ const j=Math.floor(Math.random()*(k+1)); [p[k],p[j]]=[p[j],p[k]]; }
     pop.push(p);
   }
-  let best=packOrder(container, units, volIdx);
+  let best=evalFast(volIdx);
+  const elites=[{p:volIdx.slice(), f:fitOf(best)}];
+  function pushElite(p,f){
+    if(elites.some(e=>e.f===f)) return;
+    elites.push({p:p.slice(), f:f});
+    elites.sort((a,b)=>b.f-a.f);
+    if(elites.length>5) elites.pop();
+  }
   function ox(a,b){
-    const c=new Array(n).fill(-1);
-    const i1=Math.floor(Math.random()*n), i2=Math.floor(Math.random()*n);
+    const c=new Array(g).fill(-1);
+    const i1=Math.floor(Math.random()*g), i2=Math.floor(Math.random()*g);
     const lo=Math.min(i1,i2), hi=Math.max(i1,i2);
     const used=new Set();
     for(let i=lo;i<=hi;i++){ c[i]=a[i]; used.add(a[i]); }
-    let ptr=(hi+1)%n;
-    for(let k=0;k<n;k++){
-      const g=b[(hi+1+k)%n];
-      if(!used.has(g)){ c[ptr]=g; ptr=(ptr+1)%n; }
+    let ptr=(hi+1)%g;
+    for(let k=0;k<g;k++){
+      const v=b[(hi+1+k)%g];
+      if(!used.has(v)){ c[ptr]=v; ptr=(ptr+1)%g; }
     }
     return c;
   }
-  for(let g=0;g<gens;g++){
-    const scored=pop.map(p=>({p, f:fitOf(packOrder(container, units, p))})).sort((a,b)=>b.f-a.f);
-    const topR=packOrder(container, units, scored[0].p);
-    if(fitOf(topR)>fitOf(best)) best=topR;
-    if(best.ok) break;
+  for(let gen=0;gen<gens;gen++){
+    // 逐个个体评估，时间预算耗尽即停，保证超时颗粒度只到单次装箱
+    const scored=[];
+    for(let pi=0;pi<pop.length;pi++){
+      if(evolveDeadline && Date.now()>evolveDeadline && scored.length) break;
+      scored.push({p:pop[pi], f:fitOf(evalFast(pop[pi]))});
+    }
+    scored.sort((a,b)=>b.f-a.f);
+    const M=scored.length;
+    pushElite(scored[0].p, scored[0].f);
+    if(M>1) pushElite(scored[1].p, scored[1].f);
+    if(scored[0].f>fitOf(best)) best=evalFast(scored[0].p);
+    // 全部装下即停止（件数已达上限，再算也不会有差异）
+    if(best.ok && best.n===n) break;
+    if(evolveDeadline && Date.now()>evolveDeadline) break;
     const next=[scored[0].p.slice()];
     while(next.length<popN){
       const pick=()=>{
-        const a=scored[Math.floor(Math.random()*popN)], b=scored[Math.floor(Math.random()*popN)];
+        const a=scored[Math.floor(Math.random()*M)], b=scored[Math.floor(Math.random()*M)];
         return a.f>b.f?a.p:b.p;
       };
       let c=ox(pick(),pick());
       if(Math.random()<0.3){
-        const i=Math.floor(Math.random()*n), j=Math.floor(Math.random()*n);
+        const i=Math.floor(Math.random()*g), j=Math.floor(Math.random()*g);
         [c[i],c[j]]=[c[j],c[i]];
       }
       next.push(c);
     }
     pop.length=0; pop.push(...next);
   }
-  return best;
-}
-/* 模拟退火：交换 / 翻转片段邻域 */
-function packSA(container, units, totalN){
-  const n=units.length;
-  const tn=totalN||n;
-  if(tn>300) return packGreedy(container, units, tn);
-  const volIdx=units.map((_,i)=>i).sort((a,b)=>(units[b].l*units[b].w*units[b].h)-(units[a].l*units[a].w*units[a].h));
-  let cur=volIdx.slice();
-  let curR=packOrder(container, units, cur);
-  let best=curR;
-  const iters=tn>120?200:Math.min(4000, Math.max(400, 400+n*12));
-  let T=1e12, cool=Math.pow(1e-6, 1/iters);
-  for(let it=0;it<iters;it++){
-    const cand=cur.slice();
-    const i=Math.floor(Math.random()*n), j=Math.floor(Math.random()*n);
-    if(Math.random()<0.7){ [cand[i],cand[j]]=[cand[j],cand[i]]; }
-    else { const a=Math.min(i,j), b=Math.max(i,j); cand.splice(a,b-a+1,...cand.slice(a,b+1).reverse()); }
-    const r=packOrder(container, units, cand);
-    const dF=fitOf(r)-fitOf(curR);
-    if(dF>0 || Math.random()<Math.exp(dF/T)){ cur=cand; curR=r; }
-    if(fitOf(r)>fitOf(best)) best=r;
-    if(best.ok) break;
-    T*=cool;
+  // 精英重排：用精算评估器（bf/ff）重跑 top 基因，取最优
+  if(mode && mode!=='fast'){
+    for(const e of elites){
+      const r=evalFine(e.p);
+      if(fitOf(r)>fitOf(best)) best=r;
+    }
   }
   return best;
 }
-/* 增量装箱：柜内已有 + 新运单，按指定算法求最优排列 */
-function packInto(container, existingBoxes, newUnits, algo, totalN){
+/* 模拟退火：交换 / 翻转片段邻域；双起点（体积序 / 最大边序）轮换，共享 deadline。
+   退火用 'fast' 评估器；结束后 top 基因用 mode 精算评估器重排取最优 */
+function packSA(container, units, totalN, deadline, mode){
+  const n=units.length;
+  const tn=totalN||n;
+  // 时间预算已用完：立即降级贪心
+  if(deadline && Date.now()>deadline) return packGreedy(container, units, tn);
+  // 精算模式预留末段给精英重排；预留量不得超过预算的一半，且至少保证跑一轮
+  const reserve=(deadline && mode==='bf') ? Math.min(35000, Math.max(0,(deadline-Date.now()))*0.4) : 0;
+  const annealDeadline=deadline ? deadline-reserve : null;
+  const types=buildTypes(units);
+  const useTypes = types.length<n && types.length>=2;
+  const g=useTypes?types.length:n;
+  const arr=useTypes?types:units;
+  const evalFast=function(gene){
+    return useTypes ? packSeq(container, expandTypes(types,gene), 'fast') : packOrder(container, units, gene, null, 'fast');
+  };
+  const evalFine=function(gene){
+    return useTypes ? packSeq(container, expandTypes(types,gene), mode) : packOrder(container, units, gene, null, mode);
+  };
+  const inits=[
+    arr.map((_,i)=>i).sort((a,b)=>(arr[b].l*arr[b].w*arr[b].h)-(arr[a].l*arr[a].w*arr[a].h)),
+    arr.map((_,i)=>i).sort((a,b)=>Math.max(arr[b].l,arr[b].w,arr[b].h)-Math.max(arr[a].l,arr[a].w,arr[a].h))
+  ];
+  const big=tn>120;
+  const iters=big?500000:Math.min(4000, Math.max(400, 400+g*12));
+  let best=null;
+  const elites=[];
+  function pushElite(p,f){
+    if(elites.some(e=>e.f===f)) return;
+    elites.push({p:p.slice(), f:f});
+    elites.sort((a,b)=>b.f-a.f);
+    if(elites.length>5) elites.pop();
+  }
+  for(let ii=0; ii<inits.length; ii++){
+    const init=inits[ii];
+    if(best && best.ok && best.n===n) break;
+    if(ii>0 && annealDeadline && Date.now()>annealDeadline) break;
+    let cur=init.slice();
+    let curR=evalFast(cur);
+    if(!best || fitOf(curR)>fitOf(best)) best=curR;
+    pushElite(cur, fitOf(curR));
+    let T=1e12, cool=Math.pow(1e-6, 1/Math.min(iters,4000));
+    for(let it=0;it<iters;it++){
+      if(annealDeadline && Date.now()>annealDeadline) break;
+      const cand=cur.slice();
+      const i=Math.floor(Math.random()*g), j=Math.floor(Math.random()*g);
+      if(Math.random()<0.7){ [cand[i],cand[j]]=[cand[j],cand[i]]; }
+      else { const a=Math.min(i,j), b=Math.max(i,j); cand.splice(a,b-a+1,...cand.slice(a,b+1).reverse()); }
+      const r=evalFast(cand);
+      const dF=fitOf(r)-fitOf(curR);
+      if(dF>0 || Math.random()<Math.exp(dF/T)){ cur=cand; curR=r; }
+      if(fitOf(r)>fitOf(best)){ best=r; pushElite(cand, fitOf(r)); }
+      if(best.ok && best.n===n) break;
+      T*=cool;
+    }
+  }
+  // top 基因精算重排
+  if(mode && mode!=='fast'){
+    for(const e of elites){
+      const r=evalFine(e.p);
+      if(fitOf(r)>fitOf(best)) best=r;
+    }
+  }
+  // 兜底：预算极短时也要保证返回结果，不能是 null
+  return best || packGreedy(container, units, tn);
+}
+/* 增量装箱：柜内已有 + 新运单，按指定算法求最优排列；deadline 为该算法的时间预算。
+   incremental=true 时已有箱固定不动，只塞新箱（多运单矩阵试算用，快） */
+function packInto(container, existingBoxes, newUnits, algo, totalN, deadline, mode, incremental){
+  if(incremental && existingBoxes.length && algo==='greedy'){
+    return packGreedyIncremental(container, existingBoxes, newUnits, totalN);
+  }
   const units=[
     ...existingBoxes.map(b=>({l:b.l,w:b.w,h:b.h,wt:b.wt||0,name:b.name,color:b.color,waybill:b.waybill,subid:b.subid})),
     ...newUnits
   ];
-  if(algo==='ga') return packGA(container, units, totalN);
-  if(algo==='sa') return packSA(container, units, totalN);
+  if(algo==='ga') return packGA(container, units, totalN, deadline, mode);
+  if(algo==='sa') return packSA(container, units, totalN, deadline, mode);
+  if(algo==='wall'){
+    // 墙体法吃大头预算，剩余留给驱逐链修复（_ejPct=驱逐链预算占比，精算模式 0.35）
+    const pct=container._ejPct||0;
+    const t0=Date.now();
+    const wdl=(deadline&&pct) ? t0+(deadline-t0)*(1-pct) : deadline;
+    const r=packWallsTail(container, units, wdl, container._wallR);
+    if(pct && deadline && Date.now()<deadline-2000 && r.boxes.length<units.length){
+      const placed=new Set(r.boxes.map(b=>b.u));
+      const pend=units.filter(u=>!placed.has(u));
+      if(pend.length) return packEject(container, r, pend, units.length, deadline);
+    }
+    return r;
+  }
   return packGreedy(container, units, totalN);
+}
+/* 驱逐链修复：对墙体解的剩余箱做「直接找位 / 踢 1-2 个阻挡箱腾位再回填」，
+   只有净增箱数才接受。实测在 827 箱 40HQ 上稳定 +2 箱（808→810），约 1 分钟收敛 */
+function packEject(container, r, pending, totalUnits, deadline){
+  const CS=500;
+  const grid=new Map();
+  const cells=(b,fn)=>{ for(let ix=Math.floor(b.x/CS);ix<=Math.floor((b.x+b.l-0.01)/CS);ix++) for(let iy=Math.floor(b.y/CS);iy<=Math.floor((b.y+b.w-0.01)/CS);iy++) for(let iz=Math.floor(b.z/CS);iz<=Math.floor((b.z+b.h-0.01)/CS);iz++) fn(ix+'|'+iy+'|'+iz); };
+  const gridAdd=b=>cells(b,k=>{ let a=grid.get(k); if(!a){a=[];grid.set(k,a);} a.push(b); });
+  const gridDel=b=>cells(b,k=>{ const a=grid.get(k); if(a){ const j=a.indexOf(b); if(j>=0)a.splice(j,1);} });
+  for(const b of r.boxes) gridAdd(b);
+  const colliders=(x,y,z,l,w,h)=>{ const set=new Set(); for(let ix=Math.floor(x/CS);ix<=Math.floor((x+l-0.01)/CS);ix++) for(let iy=Math.floor(y/CS);iy<=Math.floor((y+w-0.01)/CS);iy++) for(let iz=Math.floor(z/CS);iz<=Math.floor((z+h-0.01)/CS);iz++){ const a=grid.get(ix+'|'+iy+'|'+iz); if(!a) continue; for(const b of a) if(x<b.x+b.l-0.01&&x+l>b.x+0.01&&y<b.y+b.w-0.01&&y+w>b.y+0.01&&z<b.z+b.h-0.01&&z+h>b.z+0.01) set.add(b); } return [...set]; };
+  const fits=(x,y,z,l,w,h)=>{ if(x<-0.01||y<-0.01||z<-0.01||x+l>container.L+0.01||y+w>container.W+0.01||z+h>container.H+0.01) return false; return colliders(x,y,z,l,w,h).length===0; };
+  const addBox=b=>{ r.boxes.push(b); gridAdd(b); };
+  const removeBox=b=>{ const i=r.boxes.indexOf(b); if(i>=0)r.boxes.splice(i,1); gridDel(b); };
+  // 候选点 = 已放箱 8 角点 + 原点（不放全笛卡尔积，量级差 3 个数量级）
+  const candPts=()=>{ const pts=[[0,0,0]]; for(const b of r.boxes){ for(const dx of [b.x,b.x+b.l]) for(const dy of [b.y,b.y+b.w]) for(const dz of [b.z,b.z+b.h]) pts.push([dx,dy,dz]); } return pts; };
+  const findSpots=(dims,maxC)=>{ const spots=[]; const pts=candPts(); for(const o of orientations(dims)){ for(const p of pts){ if(fits(p[0],p[1],p[2],o.l,o.w,o.h)) spots.push({x:p[0],y:p[1],z:p[2],l:o.l,w:o.w,h:o.h,col:[]}); } } if(spots.length||!maxC) return spots; for(const o of orientations(dims)){ for(const p of pts){ if(p[0]+o.l>container.L+0.01||p[1]+o.w>container.W+0.01||p[2]+o.h>container.H+0.01) continue; const col=colliders(p[0],p[1],p[2],o.l,o.w,o.h); if(col.length>=1&&col.length<=maxC) spots.push({x:p[0],y:p[1],z:p[2],l:o.l,w:o.w,h:o.h,col}); } } return spots; };
+  const mk=(u,s)=>({x:s.x,y:s.y,z:s.z,l:s.l,w:s.w,h:s.h,wt:u.wt||0,name:u.name,color:u.color,waybill:u.waybill,subid:u.subid,u:u});
+  let pass=0;
+  while((!deadline||Date.now()<deadline) && pending.length){
+    pass++; let improved=false;
+    pending.sort((a,b)=>(b.l*b.w*b.h)-(a.l*a.w*a.h));
+    for(let pi=0;pi<pending.length;pi++){
+      const u=pending[pi];
+      const spots=findSpots(u,2);
+      const free=spots.filter(s=>!s.col.length);
+      if(free.length){
+        const s=free.sort((a,b)=>(a.z*1000+a.y)-(b.z*1000+b.y))[0];
+        addBox(mk(u,s)); pending.splice(pi,1); pi--; improved=true; continue;
+      }
+      const ej=spots.filter(s=>s.col.length>0).sort((a,b)=>(a.col.length-b.col.length)||(a.col.reduce((t,c)=>t+c.l*c.w*c.h,0)-b.col.reduce((t,c)=>t+c.l*c.w*c.h,0)));
+      let done=false;
+      for(const s of ej.slice(0,40)){
+        // ej 是预计算的，之前候选位的回滚可能已把 col 引用的箱换成新对象 —— 引用失效则跳过
+        if(!s.col.every(b=>r.boxes.includes(b))) continue;
+        const ejected=s.col.map(b=>({b:b,u:b.u,l:b.l,w:b.w,h:b.h}));
+        for(const b of s.col) removeBox(b);
+        if(!fits(s.x,s.y,s.z,s.l,s.w,s.h)){ for(const e of ejected) addBox(e.b); continue; }
+        const ub=mk(u,s); addBox(ub);
+        ejected.sort((a,b)=>(b.l*b.w*b.h)-(a.l*a.w*a.h));
+        const unplaced=[];
+        for(const e of ejected){
+          const esp=findSpots(e,0).filter(x=>!x.col.length);
+          if(esp.length) addBox(mk(e.u,esp[0]));
+          else unplaced.push(e);
+        }
+        if(!unplaced.length){ pending.splice(pi,1); pi--; improved=true; done=true; break; }
+        removeBox(ub); // 显式移除目标箱（不能依赖 boxes[len-1]，回填箱在其之后加入）
+        for(const e of unplaced) addBox(e.b); // 原对象加回，避免副本泄漏
+      }
+      if(done) continue;
+    }
+    if(!improved) break;
+  }
+  let vol=0; for(const b of r.boxes) vol+=b.l*b.w*b.h;
+  r.n=r.boxes.length; r.vol=vol; r.ok=r.boxes.length===totalUnits;
+  return r;
 }
 function orientations(u){
   const dl=u.l,dw=u.w,dh=u.h;
@@ -682,10 +1289,56 @@ function orientations(u){
   for(const s of set){ const k=s.join(','); if(!seen[k]){seen[k]=1;out.push({l:s[0],w:s[1],h:s[2]});} }
   return out;
 }
+/* 同型箱合并：数量多的场景把相同长宽高/重量的箱子归并为“箱型”。
+   同型箱之间的相对顺序对装箱结果毫无影响，合并后搜索空间从 N! 降到 T!，
+   同样的时间能探索的组合数量呈数量级增加——这是大数据量下质量的根本保证。 */
+function buildTypes(units){
+  const map=new Map();
+  for(const u of units){
+    const k=u.l+'_'+u.w+'_'+u.h+'_'+(u.wt||0);
+    let t=map.get(k);
+    if(!t){ t={l:u.l,w:u.w,h:u.h,wt:u.wt||0,count:0,u:u}; map.set(k,t); }
+    t.count++;
+  }
+  return Array.from(map.values());
+}
+function expandTypes(types, order){
+  const seq=[];
+  for(const ti of order){ const t=types[ti]; for(let k=0;k<t.count;k++) seq.push(t.u); }
+  return seq;
+}
+function packSeq(container, seq, mode){
+  return packOrder(container, seq, seq.map((_,i)=>i), null, mode);
+}
+/* 增量贪心：fixed 箱保持不动，只把新运单的箱塞进剩余空间（多运单矩阵试算用，快） */
+function packGreedyIncremental(container, fixedBoxes, newUnits, totalN){
+  let strategies=[
+    (a,b)=>(b.l*b.w*b.h)-(a.l*a.w*a.h),
+    (a,b)=>Math.max(b.l,b.w,b.h)-Math.max(a.l,a.w,a.h),
+    (a,b)=>Math.max(b.l,b.w)*Math.min(b.l,b.w)-Math.max(a.l,a.w)*Math.min(a.l,a.w),
+    (a,b)=>b.h-a.h,
+    (a,b)=>(a.l*a.w*a.h)-(b.l*b.w*b.h),
+  ];
+  if((totalN||newUnits.length)>120) strategies=strategies.slice(0,2);
+  let best=null;
+  for(const fn of strategies){
+    const order=newUnits.map((_,i)=>i).sort((i,j)=>fn(newUnits[i],newUnits[j]));
+    const r=packOrder(container, newUnits, order, fixedBoxes, 'fast');
+    if(!best||fitOf(r)>fitOf(best)) best=r;
+    if(best.ok) break;
+  }
+  return best;
+}
 
 /* ========== 主计算流程（多柜 + 运单整票同柜） ========== */
 let resultCabs=[], resultCabList=[], usedIdx=[], currentCabIdx=0, currentCam='persp';
+let orderMode='h';  // 装柜顺序解读方式：h=横排(默认) v=纵排 z=上下排 —— 只改展示编号，不影响算法
 function calc(){
+  // 计算进行中时再点按钮 = 取消本次计算
+  if(window._solving){
+    if(window._cancelSolve) window._cancelSolve();
+    return;
+  }
   const specs=readCabSpecs().filter(s=>s.count>0);
   if(!specs.length){ alert('请至少添加一个柜型'); return; }
   // 展开柜组合成柜实例列表
@@ -722,65 +1375,210 @@ function calc(){
   const groupList=goodOrder.map(wb=>({waybill:wb, units:groups[wb].units, color:groups[wb].color}))
     .sort((a,b)=> (b.units.reduce((s,u)=>s+u.l*u.w*u.h,0))-(a.units.reduce((s,u)=>s+u.l*u.w*u.h,0)));
 
-  // 显示加载状态（大数据量后台计算）
+  // 允许纸箱压缩：全箱每维 ×(1-sqz)（模拟微形变），按压缩后尺寸解算与展示
+  window._sqz=0;
+  const sqzEl=document.getElementById('sqzMode');
+  const sqz=sqzEl?Math.min(0.05, Math.max(0, parseFloat(sqzEl.value)||0)):0;
+  if(sqz>0){
+    groupList.forEach(g=>g.units.forEach(u=>{ u.l=Math.round(u.l*(1-sqz)); u.w=Math.round(u.w*(1-sqz)); u.h=Math.round(u.h*(1-sqz)); }));
+    window._sqz=sqz;
+  }
+
+  // 显示加载状态（大数据量后台计算）；按钮保持可点，再点一次 = 取消
   const btn=document.getElementById('calcBtn');
-  if(btn){ btn.disabled=true; btn.textContent='正在计算…'; }
+  window._solving=true;
+  const setRunBtn=(txt)=>{
+    if(!btn) return;
+    btn.disabled=false;
+    btn.title='点击取消本次计算';
+    btn.innerHTML=txt+' <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; background:rgba(255,255,255,.22); font-size:10px; margin-left:6px; flex:none;" aria-label="取消">✕</span>';
+  };
+  const resetBtn=()=>{
+    window._solving=false;
+    window._cancelSolve=null;
+    if(btn){ btn.disabled=false; btn.title=''; btn.textContent='开始装柜计算'; }
+  };
+  if(btn) setRunBtn('正在计算…');
   const totalN=groupList.reduce((s,g)=>s+g.units.length,0);
-  runSolver(cabInstances, groupList, function(solutions){
-    if(btn){ btn.disabled=false; btn.textContent='开始装柜计算'; }
+  // 精算模式：bf 评估器（六面接触最大化）+ 长预算全量重排，装得更满但更耗时
+  const exactEl=document.getElementById('exactMode');
+  const exact=!exactEl || exactEl.checked;
+  const opts= exact
+    ? {mode:'bf', matrixMs:6000, gaMs:12000, saMs:12000, wallMs:120000}
+    : {mode:'ff', matrixMs:2500, gaMs:2200,  saMs:2200,  wallMs:2500};
+  // 墙体法重启次数：精算模式下不设上限，由 wallMs 时间预算自然收敛
+  cabInstances.forEach(c=>{ c._wallR = exact?99999:2; c._ejPct = exact?0.35:0; });
+  const stageText={matrix:'组合矩阵试算…', ga:'遗传算法精调…', sa:'模拟退火精调…', wall:'墙体排布精调…'};
+  runSolver(cabInstances, groupList, opts, function(stage){
+    if(stage==='cancelled'){ resetBtn(); return; }
+    if(stage!=='matrix') setRunBtn(stageText[stage]||'正在计算…');
+  }, function(solutions){
+    resetBtn();
     if(!solutions.greedy.usedIdx.length){ alert('柜型组合无法装入任何货品，请增大柜型或数量'); return; }
     // 选最优：装入件数多 → 体积利用率高
     let bestAlgo='greedy';
-    (['sa','ga']).forEach(a=>{
+    (['wall','sa','ga']).forEach(a=>{
       const b=solutions[bestAlgo], c=solutions[a];
       if(c.totalBoxes>b.totalBoxes || (c.totalBoxes===b.totalBoxes && c.util>b.util+0.01)) bestAlgo=a;
     });
     window.solutions=solutions;
     window.solutionsCabList=cabInstances;
-    console.log('算法对比(总'+totalN+'箱)', {greedy:util(solutions.greedy), ga:util(solutions.ga), sa:util(solutions.sa), '推荐':bestAlgo});
-    currentWb=''; currentSubid=''; expandedWb=new Set();
-    const lb=document.getElementById('locBar'); if(lb) lb.style.display='none';
+    console.log('算法对比(总'+totalN+'箱)', {greedy:util(solutions.greedy), ga:util(solutions.ga), sa:util(solutions.sa), wall:util(solutions.wall), '推荐':bestAlgo});
+    currentWb=''; currentSubid=''; expandedWb=new Set(); soloLayer=-1; window._legQ='';
+    const ls=document.getElementById('legSearch'); if(ls) ls.value='';
+    const ft=document.getElementById('filterTag'); if(ft) ft.style.display='none';
     showSolution(bestAlgo);
   });
   function util(s){return s.totalBoxes+'件/'+s.usedCabs+'柜/'+s.util.toFixed(1)+'%';}
 }
 
-/* 三算法完整求解（贪心/遗传/模拟退火），供主线程与 Worker 共用 */
-function solveAll(cabInstances, groupList){
+/* 求解架构（主线程与 Worker 共用）：
+   阶段A 组合矩阵：运单排序 × 柜分配策略 逐个试算（增量放置，快），得可行分配；
+   阶段B 全量重排：GA/SA 在阶段A的结果上重排精调——单柜时把剩余票的箱一起纳入「装满优先」，
+   多柜时逐柜重排自有箱。装箱质量不再受运单数量影响。 */
+function mkStats(cabInstances, cb){
+  const usedIdxL=cb.map((b,i)=>b.length?i:-1).filter(i=>i>=0);
+  const totalBoxes=cb.reduce((s,c)=>s+c.length,0);
+  const volUsed=usedIdxL.reduce((s,i)=>s+cb[i].reduce((v,b)=>v+b.l*b.w*b.h,0),0);
+  const volCap=usedIdxL.reduce((s,i)=>s+cabInstances[i].L*cabInstances[i].W*cabInstances[i].H,0);
+  return {usedIdx:usedIdxL, totalBoxes:totalBoxes, usedCabs:usedIdxL.length, util:volCap?volUsed/volCap*100:0};
+}
+function buildAsgLeftover(groupList, cb){
+  const asg={};
+  const leftover=[];
+  for(const grp of groupList){
+    const wb=grp.waybill;
+    let placedCnt=0, cabIdx=-1;
+    for(let i=0;i<cb.length;i++){
+      const c=cb[i].filter(b=>b.waybill===wb).length;
+      if(c>0){ placedCnt+=c; if(cabIdx<0) cabIdx=i; }
+    }
+    if(cabIdx>=0) asg[wb]=cabIdx;
+    const un=grp.units.length-placedCnt;
+    if(un>0){
+      // 未装部分的体积/重量按比例估算（逐箱追踪成本高且对决策无影响）
+      const ratio=un/grp.units.length;
+      const uv=grp.units.reduce((s,u)=>s+u.l*u.w*u.h,0)*ratio;
+      const uw=grp.units.reduce((s,u)=>s+(u.wt||0),0)*ratio;
+      leftover.push({waybill:wb, boxes:un, volume:uv, weight:uw});
+    }
+  }
+  return {asg:asg, leftover:leftover};
+}
+/* 阶段A：组合矩阵试算（增量放置），返回最优可行解 */
+function solveStageA(cabInstances, groupList, matrixMs){
+  const t0=Date.now();
   const totalN=groupList.reduce((s,g)=>s+g.units.length,0);
-  function solve(algo){
+  const big=totalN>120;
+  const manyGroups=groupList.length>6;
+
+  function orderGroups(key){
+    const val=function(gr){
+      if(key==='cnt') return gr.units.length;
+      if(key==='wt') return gr.units.reduce((s,u)=>s+(u.wt||0),0);
+      if(key==='maxdim') return Math.max.apply(null, gr.units.map(u=>Math.max(u.l,u.w,u.h)));
+      return gr.units.reduce((s,u)=>s+u.l*u.w*u.h,0);
+    };
+    const arr2=groupList.slice().sort((a,b)=>val(b)-val(a));
+    return key==='volasc' ? arr2.reverse() : arr2;
+  }
+  function solveRun(orderedGroups, cabMode){
     const cb=cabInstances.map(()=>[]);
-    const asg={};
-    const leftover=[];
-    for(const grp of groupList){
-      const gVol=grp.units.reduce((s,u)=>s+u.l*u.w*u.h,0);
+    for(const grp of orderedGroups){
       const gWt=grp.units.reduce((s,u)=>s+(u.wt||0),0);
-      let placed=false;
+      let bestIdx=-1, bestR=null, bestF=-Infinity, bestUsed=-1;
       for(let idx=0;idx<cabInstances.length;idx++){
         const cab=cabInstances[idx];
         const curWt=cb[idx].reduce((s,b)=>s+(b.wt||0),0);
         if(curWt+gWt>cab.maxW+0.001) continue;
-        const r=packInto(cab, cb[idx], grp.units, algo, totalN);
-        if(r.ok){ cb[idx]=r.boxes; asg[grp.waybill]=idx; placed=true; break; }
+        const r=packInto(cab, cb[idx], grp.units, 'greedy', totalN, 0, 'ff', manyGroups);
+        if(!r.ok) continue;
+        const f=fitOf(r), used=cb[idx].length>0?1:0;
+        if(f>bestF || (f===bestF && used>bestUsed)){ bestR=r; bestIdx=idx; bestF=f; bestUsed=used; }
+        if(cabMode==='first') break;
       }
-      if(!placed) leftover.push({waybill:grp.waybill, boxes:grp.units.length, volume:gVol, weight:gWt});
+      if(bestR) cb[bestIdx]=bestR.boxes;
     }
-    const usedIdxL=cb.map((b,i)=>b.length?i:-1).filter(i=>i>=0);
-    const totalBoxes=cb.reduce((s,c)=>s+c.length,0);
-    const usedCabs=usedIdxL.length;
-    const volUsed=usedIdxL.reduce((s,i)=>s+cb[i].reduce((v,b)=>v+b.l*b.w*b.h,0),0);
-    const volCap=usedIdxL.reduce((s,i)=>s+cabInstances[i].L*cabInstances[i].W*cabInstances[i].H,0);
-    return {cb, asg, leftover, usedIdx:usedIdxL, totalBoxes, usedCabs, util:volCap?volUsed/volCap*100:0};
+    return cb;
   }
-  const greedy=solve('greedy');
-  // 大数据量 GA/SA 已退化为贪心，直接复用，避免重复计算
-  if(totalN>300) return {greedy:greedy, ga:greedy, sa:greedy};
-  return {greedy:greedy, ga:solve('ga'), sa:solve('sa')};
+  function scoreCb(cb){
+    const st=mkStats(cabInstances, cb);
+    return st.totalBoxes*1e12 - st.usedCabs*1e6 + st.util;
+  }
+  const orderKeys= big? ['vol','cnt','wt','maxdim'] : ['vol','cnt','wt','maxdim','volasc'];
+  const cfgResults=[];
+  let bestCb=null, bestScore=-Infinity;
+  outer:
+  for(const ok of orderKeys) for(const cm of ['best','first']){
+    const cb=solveRun(orderGroups(ok), cm);
+    const sc=scoreCb(cb);
+    cfgResults.push({ok:ok, cm:cm, sc:sc});
+    if(sc>bestScore){ bestScore=sc; bestCb=cb; }
+    if(Date.now()-t0>(matrixMs||2500)) break outer;
+  }
+  cfgResults.sort((a,b)=>b.sc-a.sc);
+  const al=buildAsgLeftover(groupList, bestCb);
+  const st=mkStats(cabInstances, bestCb);
+  const sol={cb:bestCb, asg:al.asg, leftover:al.leftover, usedIdx:st.usedIdx, totalBoxes:st.totalBoxes, usedCabs:st.usedCabs, util:st.util};
+  sol._cfgs=cfgResults.slice(0,3);
+  return sol;
 }
-/* 后台求解：优先 Web Worker，不支持则主线程兜底 */
+/* 阶段B：在阶段A结果上全量重排精调。
+   单柜：纳入全部箱（含剩余票）「装满优先」；多柜：逐柜重排自有箱。 */
+function solveStageB(cabInstances, groupList, base, engine, mode, budgetMs){
+  const totalN=groupList.reduce((s,g)=>s+g.units.length,0);
+  const dl=Date.now()+(budgetMs||2200);
+  const cabVol=function(i){ return cabInstances[i].L*cabInstances[i].W*cabInstances[i].H; };
+  function adopt(cb){
+    const al=buildAsgLeftover(groupList, cb);
+    const st=mkStats(cabInstances, cb);
+    return {cb:cb, asg:al.asg, leftover:al.leftover, usedIdx:st.usedIdx, totalBoxes:st.totalBoxes, usedCabs:st.usedCabs, util:st.util};
+  }
+  if(base.usedIdx.length===1){
+    // 单柜：全量重排（含剩余票的箱），装满优先
+    const ci=base.usedIdx[0];
+    const cab=cabInstances[ci];
+    const units=groupList.flatMap(g=>g.units);
+    const cur={n:base.cb[ci].length, vol:base.cb[ci].reduce((s,b)=>s+b.l*b.w*b.h,0), ok:base.cb[ci].length===units.length};
+    const r=packInto(cab, [], units, engine, totalN, dl, mode);
+    if(fitOf(r)>fitOf(cur)){
+      const cb=cabInstances.map(()=>[]);
+      cb[ci]=r.boxes;
+      return adopt(cb);
+    }
+    return base;
+  }
+  // 多柜：逐柜重排自有箱，预算均分
+  const slice=Math.max(400, Math.floor((budgetMs||2200)/Math.max(1,base.usedIdx.length)));
+  const cb=base.cb.map(a=>a.slice());
+  let changed=false;
+  for(const ci of base.usedIdx){
+    const cab=cabInstances[ci];
+    const units=cb[ci].map(b=>b.u);
+    const cur={n:units.length, vol:cb[ci].reduce((s,b)=>s+b.l*b.w*b.h,0), ok:true};
+    const r=packInto(cab, [], units, engine, totalN, Date.now()+slice, mode);
+    if(fitOf(r)>fitOf(cur)){ cb[ci]=r.boxes; changed=true; }
+  }
+  return changed?adopt(cb):base;
+}
+/* 三算法完整求解（贪心/遗传/模拟退火），同步兜底与测试用 */
+function solveAll(cabInstances, groupList, opts){
+  opts=opts||{};
+  const mode=opts.mode||'ff';
+  const a=solveStageA(cabInstances, groupList, opts.matrixMs||2500);
+  const ga=solveStageB(cabInstances, groupList, a, 'ga', mode, opts.gaMs==null?2200:opts.gaMs);
+  const sa=solveStageB(cabInstances, groupList, a, 'sa', mode, opts.saMs==null?2200:opts.saMs);
+  // 墙体法：箱数多时通常明显更满，作为第四套方案并列对比
+  const best0=[a,ga,sa].reduce((b,s)=>scoreSol(s)>scoreSol(b)?s:b);
+  const wall=solveStageB(cabInstances, groupList, best0, 'wall', mode, opts.wallMs==null?2200:opts.wallMs);
+  return {greedy:a, ga:ga, sa:sa, wall:wall};
+}
+function scoreSol(s){ return s.totalBoxes*1e12 - s.usedCabs*1e6 + s.util; }
+/* 后台求解：优先 Web Worker，不支持则主线程兜底。
+   分段协议：A=组合矩阵 → B(ga) → B(sa)，段间回报进度，页面可看到当前阶段。 */
 let _solverWorker=null;
-function runSolver(cabInstances, groupList, cb){
-  const data={cabInstances:cabInstances, groupList:groupList};
+function runSolver(cabInstances, groupList, opts, onProgress, cb){
+  opts=opts||{};
   let useWorker=false;
   try{ useWorker=typeof Worker!=='undefined' && typeof URL!=='undefined' && URL.createObjectURL; }catch(e){}
   if(useWorker){
@@ -789,28 +1587,81 @@ function runSolver(cabInstances, groupList, cb){
         const body=[
           'var packOrder='+packOrder.toString(),
           'var fitOf='+fitOf.toString(),
+          'var buildTypes='+buildTypes.toString(),
+          'var expandTypes='+expandTypes.toString(),
+          'var packSeq='+packSeq.toString(),
           'var packGreedy='+packGreedy.toString(),
+          'var packGreedyIncremental='+packGreedyIncremental.toString(),
+          'var mulberry32='+mulberry32.toString(),
+          'var skyline2D='+skyline2D.toString(),
+          'var maxRects2D='+maxRects2D.toString(),
+          'var plOverlap2D='+plOverlap2D.toString(),
+          'var packWall2D='+packWall2D.toString(),
+          'var packWalls='+packWalls.toString(),
+          'var packWallsTail='+packWallsTail.toString(),
+          'var packStrips='+packStrips.toString(),
+          'var packEject='+packEject.toString(),
           'var packGA='+packGA.toString(),
           'var packSA='+packSA.toString(),
           'var packInto='+packInto.toString(),
           'var orientations='+orientations.toString(),
+          'var mkStats='+mkStats.toString(),
+          'var buildAsgLeftover='+buildAsgLeftover.toString(),
+          'var solveStageA='+solveStageA.toString(),
+          'var solveStageB='+solveStageB.toString(),
           'var solveAll='+solveAll.toString(),
-          'self.onmessage=function(e){var solutions=solveAll(e.data.cabInstances,e.data.groupList);self.postMessage({solutions:solutions});};'
+          'self.onmessage=function(e){',
+          '  var d=e.data;',
+          '  if(d.step==="A"){ self.postMessage({step:"A", solution:solveStageA(d.cabInstances,d.groupList,d.matrixMs)}); }',
+          '  else { self.postMessage({step:"B", engine:d.engine, solution:solveStageB(d.cabInstances,d.groupList,d.solution,d.engine,d.mode,d.budgetMs)}); }',
+          '};'
         ].join('\n');
         const blob=new Blob([body],{type:'application/javascript'});
         _solverWorker=new Worker(URL.createObjectURL(blob));
       }
       const w=_solverWorker;
-      const onMsg=function(ev){ w.removeEventListener('message',onMsg); w.removeEventListener('error',onErr); cb(ev.data.solutions); };
-      const onErr=function(){ w.removeEventListener('message',onMsg); w.removeEventListener('error',onErr);
-        setTimeout(()=>cb(solveAll(cabInstances,groupList)),0); };
+      const solutions={};
+      let cancelled=false;
+      const cleanup=function(){ w.removeEventListener('message',onMsg); w.removeEventListener('error',onErr); window._cancelSolve=null; };
+      const onMsg=function(ev){
+        if(cancelled) return;
+        const d=ev.data;
+        if(d.step==='A'){
+          solutions.greedy=d.solution;
+          if(onProgress) onProgress('ga');
+          w.postMessage({step:'B', engine:'ga', cabInstances:cabInstances, groupList:groupList, solution:d.solution, mode:opts.mode||'ff', budgetMs:opts.gaMs==null?2200:opts.gaMs});
+        }else if(d.engine==='ga'){
+          solutions.ga=d.solution;
+          if(onProgress) onProgress('sa');
+          w.postMessage({step:'B', engine:'sa', cabInstances:cabInstances, groupList:groupList, solution:d.solution, mode:opts.mode||'ff', budgetMs:opts.saMs==null?2200:opts.saMs});
+        }else if(d.engine==='sa'){
+          solutions.sa=d.solution;
+          if(onProgress) onProgress('wall');
+          w.postMessage({step:'B', engine:'wall', cabInstances:cabInstances, groupList:groupList, solution:d.solution, mode:opts.mode||'ff', budgetMs:opts.wallMs==null?2200:opts.wallMs});
+        }else{
+          solutions.wall=d.solution;
+          cleanup();
+          cb(solutions);
+        }
+      };
+      const onErr=function(){ if(cancelled) return; cleanup(); setTimeout(()=>cb(solveAll(cabInstances,groupList,opts)),0); };
+      // 取消：终止 Worker，丢弃后续消息，按钮由 onProgress('cancelled') 复位
+      window._cancelSolve=function(){
+        if(cancelled) return;
+        cancelled=true;
+        try{ w.terminate(); }catch(e){}
+        _solverWorker=null;
+        cleanup();
+        if(onProgress) onProgress('cancelled');
+      };
       w.addEventListener('message',onMsg);
       w.addEventListener('error',onErr);
-      w.postMessage(data);
+      if(onProgress) onProgress('matrix');
+      w.postMessage({step:'A', cabInstances:cabInstances, groupList:groupList, matrixMs:opts.matrixMs||2500});
       return;
     }catch(e){ /* 落到主线程兜底 */ }
   }
-  setTimeout(()=>cb(solveAll(cabInstances,groupList)),30);
+  setTimeout(()=>cb(solveAll(cabInstances,groupList,opts)),30);
 }
 
 /* 切换算法方案 */
@@ -873,7 +1724,7 @@ function renderResults(cabs, cabList, usedIdx, leftoverGroups, assigned, algo){
   const note=document.getElementById('summaryNote');
   const specDesc=cabList.map((c,i)=>c.label).join('、');
   let html='<div style="font-size:12px; line-height:1.8;">';
-  html+='<div><span style="color:var(--muted)">总体方案：</span>共 '+cabList.length+' 条柜（'+esc(specDesc)+'），实际使用 '+usedIdx.length+' 条，装完 '+totalUnits.toLocaleString()+' 件，体积利用率 '+volUtil.toFixed(1)+'%，毛重 '+totalWt.toLocaleString()+' kg。'+(overflow?'<span style="color:var(--warn)"> 超载！</span>':'')+'</div>';
+  html+='<div>共 '+cabList.length+' 条柜（'+esc(specDesc)+'），实际使用 '+usedIdx.length+' 条，装完 '+totalUnits.toLocaleString()+' 件，体积利用率 '+volUtil.toFixed(1)+'%，毛重 '+totalWt.toLocaleString()+' kg。'+(window._sqz>0?'<span style="color:var(--accent2)"> 已按纸箱压缩 '+Math.round(window._sqz*1000)/10+'% 计算。</span>':'')+(overflow?'<span style="color:var(--warn)"> 超载！</span>':'')+'</div>';
 
   // 已装下运单
   const fittedRows=[];
@@ -901,10 +1752,11 @@ function renderResults(cabs, cabList, usedIdx, leftoverGroups, assigned, algo){
   document.getElementById('cabSelWrap').innerHTML=sel;
 
   // 算法方案切换下拉框
-  const algoNames={greedy:'多策略贪心',ga:'遗传算法',sa:'模拟退火'};
+  const algoNames={greedy:'多策略贪心',ga:'遗传算法',sa:'模拟退火',wall:'墙体排布法'};
   let asel='<select id="algoSel" onchange="showSolution(this.value)" style="padding:4px 8px; font-size:11px; background:var(--panel2); color:var(--accent); border:1px solid rgba(0,229,255,.4); border-radius:6px;">';
-  ['greedy','ga','sa'].forEach(a=>{
+  ['wall','sa','ga','greedy'].forEach(a=>{
     const s=window.solutions[a];
+    if(!s) return;
     asel+='<option value="'+a+'"'+(a===algo?' selected':'')+'>'+algoNames[a]+'：'+s.totalBoxes+'件 · '+s.usedCabs+'柜 · '+s.util.toFixed(1)+'%</option>';
   });
   asel+='</select>';
@@ -915,6 +1767,7 @@ function renderResults(cabs, cabList, usedIdx, leftoverGroups, assigned, algo){
 let goodsNames=[];
 function viewCab(idx){
   currentCabIdx=idx;
+  soloLayer=-1;  // 切柜后层单显失效
   // 切柜后若当前高亮（父运单/子单）不在该柜，清除高亮
   const boxesHere=resultCabs[idx]||[];
   if(currentSubid && !boxesHere.some(b=>b.subid===currentSubid)) currentSubid='';
@@ -938,14 +1791,40 @@ let scene, camera, renderer, controls, cabGroup;
 let currentWb='';  // 当前高亮定位的父运单
 let currentSubid='';  // 当前高亮定位的单个子单号
 let expandedWb=new Set();  // 图例中已展开的父运单列表
+let soloLayer=-1;  // 俯视图单显层（-1=全部显示），3D 中隐藏其他层
 let camTween=null;  // 相机补间动画 {fromPos,toPos,fromTgt,toTgt,start,dur}
+function computeLayers(boxes){
+  // 与俯视图一致的分层规则：z 相近（<平均箱高*0.6）归一层，地面层在前
+  if(!boxes.length) return [];
+  const avgH=boxes.reduce((s,b)=>s+b.h,0)/boxes.length||50;
+  const layers=[];
+  boxes.slice().sort((a,b)=>a.z-b.z).forEach(b=>{
+    const layer=layers.find(L=>Math.abs(L.z-b.z)<avgH*0.6);
+    if(layer) layer.boxes.push(b); else layers.push({z:b.z, boxes:[b]});
+  });
+  layers.sort((a,b)=>a.z-b.z);
+  return layers;
+}
+function toggleSoloLayer(li){
+  soloLayer=(soloLayer===li)?-1:li;
+  renderWarehouseGuide(currentCabIdx);
+  renderCurrent();
+  updateLocBar();
+}
+function jumpLayer(v){
+  const li=parseInt(v,10);
+  soloLayer=isNaN(li)?-1:li;
+  renderWarehouseGuide(currentCabIdx);
+  renderCurrent();
+  updateLocBar();
+}
 function highlightWaybill(wb){
   const wbCabs=resultCabs.map((boxes,idx)=>({idx,count:boxes.filter(b=>b.waybill===wb).length})).filter(x=>x.count>0);
   if(!wbCabs.length){ alert('运单 '+wb+' 未装入任何柜（整票未装下）'); return; }
   currentWb = (currentWb===wb && !currentSubid) ? '' : wb;
   currentSubid='';  // 切换父运单时清除单子高亮
   if(currentWb && !wbCabs.some(x=>x.idx===currentCabIdx)){ viewCab(wbCabs[0].idx); }
-  else { renderCurrent(); }
+  else { renderCurrent(); renderWarehouseGuide(currentCabIdx); }
   renderLegend();
   updateLocBar();
 }
@@ -960,10 +1839,14 @@ function highlightSubid(wb, subid){
   if(currentSubid){
     const hit=resultCabs.map((boxes,idx)=>({idx,has:boxes.some(b=>b.subid===subid)})).find(x=>x.has);
     if(hit && hit.idx!==currentCabIdx) viewCab(hit.idx);
-    else renderCurrent();
-  } else renderCurrent();
+    else { renderCurrent(); renderWarehouseGuide(currentCabIdx); }
+  } else { renderCurrent(); renderWarehouseGuide(currentCabIdx); }
   renderLegend();
   updateLocBar();
+}
+function filterLegend(q){
+  window._legQ=(q||'').trim().toLowerCase();
+  renderLegend();
 }
 function renderLegend(){
   // 只汇总当前柜的父运单
@@ -979,10 +1862,20 @@ function renderLegend(){
     const first=Object.keys(wbMap).find(w=>Object.keys(wbMap[w].subs).length>0);
     if(first) expandedWb.add(first);
   }
+  const q=window._legQ||'';
   let html='<div class="leg-tree">';
+  let shown=0;
   Object.keys(wbMap).forEach(wb=>{
     const info=wbMap[wb];
-    const subs=Object.keys(info.subs);
+    let subs=Object.keys(info.subs);
+    // 检索过滤：运单号或任一子单号命中才显示；仅子单命中时自动展开并只显示命中的子单
+    if(q){
+      const nameHit=wb.toLowerCase().indexOf(q)>=0;
+      const subHits=subs.filter(s=>s.toLowerCase().indexOf(q)>=0);
+      if(!nameHit && !subHits.length) return;
+      if(subHits.length && !nameHit){ expandedWb.add(wb); subs=subHits; }
+    }
+    shown++;
     const expanded=expandedWb.has(wb);
     html+='<div class="leg-wb'+(currentWb===wb?' active':'')+'">'+
       '<button class="leg-row" onclick="highlightWaybill('+esc("'"+wb+"'")+')">'+
@@ -1000,6 +1893,7 @@ function renderLegend(){
       html+='</div>';
     }
   });
+  if(q && !shown) html+='<div style="font-size:11px; color:var(--muted); padding:8px 4px;">无匹配的运单/子单</div>';
   html+='</div>';
   document.getElementById('legend').innerHTML=html;
 }
@@ -1009,18 +1903,46 @@ function renderWarehouseGuide(cabIdx){
   const tvEl=document.getElementById('topView');
   if(!boxes.length){ loEl.innerHTML=''; tvEl.innerHTML=''; return; }
   const cab=resultCabList[cabIdx];
-  // 装柜顺序：地面层(z小)先装 → 柜尾(x=0)往柜口 → 左(y=0)往右
-  const order=boxes.slice().sort((a,b)=>{
-    if(a.z!==b.z) return a.z-b.z;
-    if(a.x!==b.x) return a.x-b.x;
-    return a.y-b.y;
-  });
+  const hlOn=!!(currentWb||currentSubid);
+  const hlMatch=function(b){ return currentSubid ? b.subid===currentSubid : (currentWb ? b.waybill===currentWb : false); };
+  // 装柜顺序解读（只改展示编号，不影响求解与摆放结果）：
+  // h 横排：层(z 从下往上) → 排(x 柜尾→柜口) → 排内横向(y)铺满宽度
+  // v 纵排：层(z 从下往上) → 条(y 一侧→另一侧) → 条内长向(x)从里到外
+  // z 上下排：截面(x 从里到外) → 横向(y)推进 → 每摞从下往上(z)
+  const cmp = orderMode==='v' ? ((a,b)=> a.z-b.z || a.y-b.y || a.x-b.x)
+            : orderMode==='z' ? ((a,b)=> a.x-b.x || a.y-b.y || a.z-b.z)
+            : ((a,b)=> a.z-b.z || a.x-b.x || a.y-b.y);
+  const order=boxes.slice().sort(cmp);
+  const headTxt = orderMode==='v' ? '（从下往上堆 · 同层横向一条条 · 每条从柜尾往柜口）'
+                : orderMode==='z' ? '（从柜尾到柜口逐截面 · 截面内横向推进 · 每摞从下往上码）'
+                : '（从下往上堆 · 同层从里到外 · 每排横着装满宽度再退）';
   // 左侧：顺序表
-  let html='<div style="font-weight:600; font-size:12px; margin-bottom:8px; color:var(--accent2);">柜 '+(cabIdx+1)+' · '+esc(cab.label)+'（从柜尾往里装，从下往上堆）</div>';
-  html+='<div style="overflow-y:auto; border:1px solid var(--line); border-radius:6px; flex:1;"><table style="width:100%; font-size:11px; border-collapse:collapse;"><tr style="background:#1a2740; position:sticky; top:0; z-index:1;"><th style="padding:4px 6px; border:1px solid var(--line);">#</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:left;">子单号</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:right;">长×宽×高 mm</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:right;">kg</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:left;">位置</th></tr>';
+  let html='<div style="font-weight:600; font-size:12px; margin-bottom:8px; color:var(--accent2);">柜 '+(cabIdx+1)+' · '+esc(cab.label)+headTxt+'</div>';
+  html+='<div id="loadOrderScroll" style="overflow-y:auto; border:1px solid var(--line); border-radius:6px; flex:1;"><table style="width:100%; font-size:11px; border-collapse:collapse;"><tr style="background:#1a2740; position:sticky; top:0; z-index:1;"><th style="padding:4px 6px; border:1px solid var(--line);">#</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:left;">子单号</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:right;">长×宽×高 mm</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:right;">kg</th><th style="padding:4px 6px; border:1px solid var(--line); text-align:left;">位置</th></tr>';
+  // 排/条/摞号 + 分组号（按模式）：横排按层分组、纵排按层分组、上下排按进深截面分组
+  const rowNum={}; const grpNo={}; let rn=0, gn=0;
+  const rowKey = orderMode==='v' ? (b=>b.z+'_'+b.y) : orderMode==='z' ? (b=>b.x+'_'+b.y) : (b=>b.z+'_'+b.x);
+  const grpKey = orderMode==='z' ? (b=>b.x) : (b=>b.z);
+  order.forEach(b=>{
+    const k=rowKey(b); if(!(k in rowNum)) rowNum[k]=++rn;
+    const g=grpKey(b); if(!(g in grpNo)) grpNo[g]=++gn;
+  });
+  let firstHlRow=-1, curG=null;
   order.forEach((b,i)=>{
-    const posDesc = '长向+'+Math.round(b.x)+' / 横向+'+Math.round(b.y)+' / 层+'+Math.round(b.z);
-    html+='<tr><td style="padding:3px 6px; border:1px solid var(--line); font-weight:700; color:var(--accent);">'+(i+1)+'</td>'+
+    const g=grpKey(b);
+    if(g!==curG){
+      curG=g;
+      const gt = orderMode==='z'
+        ? '— 第 '+grpNo[g]+' 个截面 · 长向 '+Math.round(b.x)+'mm · 从下往上码 —'
+        : '— 第 '+grpNo[g]+' 层 · 高度 '+Math.round(b.z)+'mm · 从柜尾到柜口 —';
+      html+='<tr><td colspan="5" style="padding:3px 6px; border:1px solid var(--line); background:#0e1a30; color:var(--accent2); font-weight:700; font-size:10px; letter-spacing:1px;">'+gt+'</td></tr>';
+    }
+    const m=hlOn && hlMatch(b);
+    if(m && firstHlRow<0) firstHlRow=i;
+    const posDesc = orderMode==='v' ? '长向+'+Math.round(b.x)+'（第'+rowNum[rowKey(b)]+'条·深） / 横向+'+Math.round(b.y)+' / 层+'+Math.round(b.z)
+                  : orderMode==='z' ? '长向+'+Math.round(b.x)+' / 横向+'+Math.round(b.y)+'（第'+rowNum[rowKey(b)]+'摞位） / 层+'+Math.round(b.z)
+                  : '横向+'+Math.round(b.y)+' / 长向+'+Math.round(b.x)+'（第'+rowNum[rowKey(b)]+'排） / 层+'+Math.round(b.z);
+    html+='<tr id="lo-row-'+i+'"'+(m?' class="ord-hl"':(hlOn?' class="ord-dim"':''))+'><td style="padding:3px 6px; border:1px solid var(--line); font-weight:700; color:var(--accent);">'+(i+1)+'</td>'+
       '<td style="padding:3px 6px; border:1px solid var(--line); font-family:monospace; color:'+b.color+';">'+esc(b.subid||b.waybill)+'</td>'+
       '<td style="padding:3px 6px; border:1px solid var(--line); text-align:right;">'+Math.round(b.l)+'×'+Math.round(b.w)+'×'+Math.round(b.h)+'</td>'+
       '<td style="padding:3px 6px; border:1px solid var(--line); text-align:right;">'+(b.wt||0)+'</td>'+
@@ -1029,54 +1951,93 @@ function renderWarehouseGuide(cabIdx){
   html+='</table></div>';
   loEl.innerHTML=html;
 
-  // 右侧：分层俯视图
-  const avgH=order.reduce((s,b)=>s+b.h,0)/order.length||50;
-  const layers=[];
-  order.slice().sort((a,b)=>a.z-b.z).forEach(b=>{
-    const layer=layers.find(L=>Math.abs(L.z-b.z)<avgH*0.6);
-    if(layer) layer.boxes.push(b); else layers.push({z:b.z, boxes:[b]});
-  });
-  layers.sort((a,b)=>a.z-b.z);
-  let tv='<div style="font-size:11px; color:var(--muted); margin-bottom:6px;">共 '+layers.length+' 层，数字=装柜顺序</div>';
+  // 右侧：分层俯视图（分层规则与 3D 单显共用 computeLayers）
+  // 画法：柜尾（里）在上、柜口（门）在下，屏幕横向=容器宽度 → 同排横着装满宽度、一排排往下退，与装柜顺序编号方向一致
+  const layers=computeLayers(order);
+  let tv='<div style="font-size:11px; color:var(--muted); margin-bottom:6px;">共 '+layers.length+' 层 · 上=柜尾 下=柜口 · 数字=装柜顺序'+(soloLayer>=0?' · <span style="color:var(--accent);">单显第 '+(soloLayer+1)+' 层（3D 已隐藏其他层，再点该层取消）</span>':' · 点击层标题可在 3D 中单显该层')+'</div>';
+  // 层级检索下拉（与 3D 标题检索标签联动）
+  const lsel=document.getElementById('layerSel');
+  if(lsel){
+    let o='<option value="-1">检索层级：全部层</option>';
+    layers.forEach((L,li)=>{ o+='<option value="'+li+'"'+(soloLayer===li?' selected':'')+'>第 '+(li+1)+' 层（'+L.boxes.length+' 箱）</option>'; });
+    lsel.innerHTML=o;
+    lsel.value=String(soloLayer);
+  }
+  let firstHlLayer=-1;
   layers.forEach((layer,li)=>{
     let bx0=Infinity,by0=Infinity,bx1=-Infinity,by1=-Infinity;
     layer.boxes.forEach(b=>{
       bx0=Math.min(bx0,b.x); by0=Math.min(by0,b.y);
       bx1=Math.max(bx1,b.x+b.l); by1=Math.max(by1,b.y+b.w);
     });
+    const hasHl=hlOn && layer.boxes.some(hlMatch);
+    if(hasHl && firstHlLayer<0) firstHlLayer=li;
     const pad=50;
     bx0-=pad; by0-=pad; bx1+=pad; by1+=pad;
-    const realW=bx1-bx0, realH=by1-by0;
-    const svgW=Math.max(280, Math.min(650, realW*0.15));
-    const sc=svgW/realW;
-    const svgH=realH*sc+30;
-    tv+='<div style="font-size:11px; color:var(--accent2); margin-top:6px;">第 '+(li+1)+' 层（高度 '+(layer.z/10).toFixed(0)+' cm）— '+layer.boxes.length+' 箱</div>';
-    tv+='<svg width="100%" height="'+Math.round(svgH)+'" style="background:#0b1220; border-radius:6px; border:1px solid var(--line);">';
+    const realW=by1-by0;   // 屏幕横向 = 容器宽度（横着的一排）
+    const realH=bx1-bx0;   // 屏幕纵向 = 容器长度（柜尾→柜口）
+    const svgW=Math.max(240, Math.min(720, (tvEl.clientWidth||460)-10));
+    const scX=svgW/realW;
+    const svgH=Math.max(240, Math.min(620, realH*scX));
+    const scY=svgH/realH;
+    tv+='<div id="tv-layer-'+li+'" class="'+(hasHl?'tv-layer-hl':'')+(soloLayer===li?' tv-layer-solo':'')+'"><div class="tv-layer-t" onclick="toggleSoloLayer('+li+')" title="点击在 3D 中只显示这一层" style="font-size:11px; color:var(--accent2); margin-top:6px; cursor:pointer;'+(soloLayer===li?' font-weight:700; text-decoration:underline;':'')+'">第 '+(li+1)+' 层（高度 '+(layer.z/10).toFixed(0)+' cm）— '+layer.boxes.length+' 箱'+(hasHl?' · ◆':'')+(soloLayer===li?' · 单显中':'')+'</div>';
+    tv+='<svg width="100%" height="'+Math.round(svgH)+'" style="background:#0b1220; border-radius:6px; border:1px solid var(--line); display:block;">';
+    tv+='<text x="'+(svgW/2)+'" y="11" fill="#64748b" font-size="9" text-anchor="middle">▲ 柜尾（最里）</text>';
+    tv+='<text x="'+(svgW/2)+'" y="'+(svgH-3)+'" fill="#64748b" font-size="9" text-anchor="middle">▼ 柜口（门）</text>';
     layer.boxes.forEach(b=>{
       const i=order.indexOf(b);
-      const sx=4+(b.x-bx0)*sc, sy=4+(b.y-by0)*sc;
-      const sw=Math.max(3,b.l*sc), sh=Math.max(3,b.w*sc);
-      tv+='<rect x="'+sx+'" y="'+sy+'" width="'+sw+'" height="'+sh+'" fill="'+b.color+'" fill-opacity="0.7" stroke="#000" stroke-width="0.5"/>';
+      const sx=4+(b.y-by0)*scX, sy=4+(b.x-bx0)*scY;
+      const sw=Math.max(3,b.w*scX), sh=Math.max(3,b.l*scY);
+      const m=hlOn && hlMatch(b);
+      tv+='<rect x="'+sx+'" y="'+sy+'" width="'+sw+'" height="'+sh+'" fill="'+b.color+'" fill-opacity="'+(hlOn?(m?1:.15):.7)+'" stroke="'+(m?'#fbbf24':'#000')+'" stroke-width="'+(m?2:0.5)+'"/>';
       if(sw>20 && sh>12){
         tv+='<text x="'+(sx+sw/2)+'" y="'+(sy+sh/2+3)+'" fill="#fff" font-size="10" text-anchor="middle" font-weight="bold">'+(i+1)+'</text>';
       }
     });
-    tv+='</svg>';
+    tv+='</svg></div>';
   });
   tvEl.innerHTML=tv;
+
+  // 联动滚动：把首个高亮行 / 首个含高亮的层滚到可视区中部
+  // 注意：滚动目标是真正可滚动的祖先容器（#loadOrder / #topView），
+  // 不能滚 innerHTML 里的包装层——它高度不受约束、永远不溢出，scrollTop 恒为 0
+  if(hlOn){
+    const centerInScroller=(el)=>{
+      let p=el && el.parentElement;
+      while(p && p!==document.body){
+        const st=getComputedStyle(p);
+        if((st.overflowY==='auto'||st.overflowY==='scroll') && p.scrollHeight>p.clientHeight+2){
+          const top=el.getBoundingClientRect().top - p.getBoundingClientRect().top + p.scrollTop;
+          // 比视口矮 → 居中；比视口高 → 顶对齐（保证标题/首行可见）
+          const off=Math.min(el.offsetHeight, p.clientHeight);
+          p.scrollTop=Math.max(0, top - (p.clientHeight-off)/2);
+          return;
+        }
+        p=p.parentElement;
+      }
+    };
+    const row=document.querySelector('#loadOrder tr.ord-hl');
+    if(row) centerInScroller(row);
+    const lay=document.querySelector('#topView .tv-layer-hl');
+    if(lay) centerInScroller(lay);
+  }
 }
 function updateLocBar(){
-  const locBar=document.getElementById('locBar');
-  if(currentSubid){
-    const total=1;
-    locBar.innerHTML='已定位子单 <b>'+esc(currentSubid)+'</b>（父运单 '+esc(currentWb)+'）· 点击图例取消';
-    locBar.style.display='block';
-  } else if(currentWb){
-    const total=resultCabs.reduce((s,c)=>s+c.filter(x=>x.waybill===currentWb).length,0);
-    const inCab=resultCabs[currentCabIdx]?resultCabs[currentCabIdx].filter(x=>x.waybill===currentWb).length:0;
-    locBar.innerHTML='已定位父运单 <b>'+esc(currentWb)+'</b> · 共 '+total.toLocaleString()+' 件 · 本柜 '+inCab.toLocaleString()+' 件 · 点击图例取消';
-    locBar.style.display='block';
-  } else { locBar.style.display='none'; }
+  // 3D 视图内不放浮动提示，改在「3D 装柜可视化」标题后显示检索标签
+  const tag=document.getElementById('filterTag');
+  const txt=document.getElementById('filterTagTxt');
+  if(!tag||!txt) return;
+  let s='';
+  if(currentSubid) s='子单 '+currentSubid+'（'+currentWb+'）';
+  else if(currentWb) s='运单 '+currentWb;
+  else if(soloLayer>=0) s='单显第 '+(soloLayer+1)+' 层';
+  if(s){ txt.textContent=s; tag.style.display='inline-flex'; }
+  else tag.style.display='none';
+}
+function clearFilter(){
+  if(currentSubid){ highlightSubid(currentWb, currentSubid); return; }
+  if(currentWb){ highlightWaybill(currentWb); return; }
+  if(soloLayer>=0) toggleSoloLayer(soloLayer);
 }
 function initThree(){
   const el=document.getElementById('stage');
@@ -1139,17 +2100,22 @@ function renderCurrent(){
   }
   // 清空
   while(cabGroup.children.length){ const c=cabGroup.children[0]; cabGroup.remove(c); if(c.geometry)c.geometry.dispose(); if(c.material)c.material.dispose(); }
-  const cab=resultCabList[currentCabIdx]; const boxes=resultCabs[currentCabIdx]||[];
+  const cab=resultCabList[currentCabIdx]; let boxes=resultCabs[currentCabIdx]||[];
+  // 层单显：只渲染俯视图中被点击的那一层，其他层隐藏
+  if(soloLayer>=0){
+    const lay=computeLayers(boxes);
+    if(soloLayer<lay.length) boxes=lay[soloLayer].boxes; else soloLayer=-1;
+  }
   const L=cab.L,W=cab.W,H=cab.H;
   // 地面网格
   const grid=new THREE.GridHelper(Math.max(L,W)*1.2, 20, 0x475569, 0x334155); grid.position.y=-1; cabGroup.add(grid);
-  // 集装箱外框线框
-  const edges=new THREE.EdgesGeometry(new THREE.BoxGeometry(L,W,H));
+  // 集装箱外框线框（数据坐标 x=长 y=宽 z=高 → Three.js X=长 Y(竖直)=高 Z(进深)=宽）
+  const edges=new THREE.EdgesGeometry(new THREE.BoxGeometry(L,H,W));
   const wire=new THREE.LineSegments(edges, new THREE.LineBasicMaterial({color:0x38bdf8}));
-  wire.position.set(L/2,W/2,H/2); cabGroup.add(wire);
-  // 底部半透明平面
+  wire.position.set(L/2,H/2,W/2); cabGroup.add(wire);
+  // 底部半透明平面（贴地 = 数据 z=0 的地面层）
   const floorMat=new THREE.MeshBasicMaterial({color:0x0ea5e9,transparent:true,opacity:.06});
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(L,W), floorMat); floor.rotation.x=-Math.PI/2; floor.position.set(L/2,W/2,0); cabGroup.add(floor);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(L,W), floorMat); floor.rotation.x=-Math.PI/2; floor.position.set(L/2,0,W/2); cabGroup.add(floor);
   // 纸箱（子单号/父运单标签 + 高亮定位）
   const isHl = (b)=>{
     if(currentSubid) return b.subid===currentSubid;
@@ -1168,58 +2134,70 @@ function renderCurrent(){
       const foot=Math.max(b.l,b.w);
       const lw=Math.max(6, foot*0.8);
       label.scale.set(lw, lw*80/384, 1);
-      label.position.set(b.x+b.l/2, b.y+b.w/2, b.z+b.h+s*0.15);
+      label.position.set(b.x+b.l/2, b.z+b.h+s*0.15, b.y+b.w/2);
       cabGroup.add(label);
     }
   };
   if(heavy){
-    // InstancedMesh 合批：900 箱也只有 1 个 draw call
+    // InstancedMesh 合批：900 箱也只有 2~3 个 draw call（高亮时拆 高亮/幽灵 两个批次）
     const geo=new THREE.BoxGeometry(1,1,1);
-    const mat=new THREE.MeshLambertMaterial({transparent:true, opacity:0.92});
-    const im=new THREE.InstancedMesh(geo, mat, boxes.length);
-    const m=new THREE.Matrix4();
-    const tmpCol=new THREE.Color();
-    boxes.forEach((b,i)=>{
+    const hlArr=[], ghArr=[];
+    boxes.forEach(b=>{
       const hlBox=isHl(b);
-      m.makeScale(b.l,b.w,b.h);
-      m.setPosition(b.x+b.l/2, b.y+b.w/2, b.z+b.h/2);
-      im.setMatrixAt(i,m);
       const col=anyHl ? (hlBox?b.color:dimColor(b.color, currentSubid?80:65)) : b.color;
-      im.setColorAt(i, tmpCol.set(col));
+      (hlBox?hlArr:ghArr).push({b, col});
       if(hlBox){
         wbBoxes.push({x:b.x,y:b.y,z:b.z,l:b.l,w:b.w,h:b.h});
         addLabel(b,true);
         if(currentSubid){
           // 单箱高亮黄框
-          const e=new THREE.EdgesGeometry(new THREE.BoxGeometry(b.l,b.w,b.h));
+          const e=new THREE.EdgesGeometry(new THREE.BoxGeometry(b.l,b.h,b.w));
           const wl=new THREE.LineSegments(e,new THREE.LineBasicMaterial({color:0xffe066}));
-          wl.position.set(b.x+b.l/2,b.y+b.w/2,b.z+b.h/2);
+          wl.position.set(b.x+b.l/2,b.z+b.h/2,b.y+b.w/2);
           cabGroup.add(wl);
         }
       }
     });
-    im.instanceMatrix.needsUpdate=true;
-    if(im.instanceColor) im.instanceColor.needsUpdate=true;
-    cabGroup.add(im);
+    const mkIM=(arr,mat)=>{
+      if(!arr.length) return;
+      const im=new THREE.InstancedMesh(geo, mat, arr.length);
+      const m=new THREE.Matrix4(); const tmpCol=new THREE.Color();
+      arr.forEach((r,i)=>{
+        const b=r.b;
+        m.makeScale(b.l,b.h,b.w);
+        m.setPosition(b.x+b.l/2, b.z+b.h/2, b.y+b.w/2);
+        im.setMatrixAt(i,m);
+        im.setColorAt(i, tmpCol.set(r.col));
+      });
+      im.instanceMatrix.needsUpdate=true;
+      if(im.instanceColor) im.instanceColor.needsUpdate=true;
+      cabGroup.add(im);
+    };
+    // 幽灵材质：高亮时其他箱近乎透明且不写深度，中间的高亮箱不再被遮挡
+    const matGhost=new THREE.MeshLambertMaterial({transparent:true, opacity:anyHl?0.08:0.92, depthWrite:!anyHl});
+    const matHl=new THREE.MeshLambertMaterial({transparent:true, opacity:1, depthWrite:true});
+    mkIM(ghArr, matGhost);
+    mkIM(hlArr, anyHl?matHl:matGhost);
   } else {
     boxes.forEach(b=>{
       const dims=b.l*b.w*b.h;
       const s=Math.cbrt(dims);
       const hlBox=isHl(b);
       let col=b.color;
-      let op=.92, edgeOp=.15, edgeCol=0x000000;
+      let op=.92, edgeOp=.15, edgeCol=0x000000, ghost=false;
       if(anyHl){
         if(hlBox){ col=b.color; op=1; edgeOp=1; edgeCol=0xffe066; }
         else {
           col=dimColor(b.color, currentSubid?80:65);
-          op=currentSubid?.15:.3;
-          edgeOp=.03;
+          op=currentSubid?.06:.08;
+          edgeOp=.05;
+          ghost=true;
         }
       }
-      const geo=new THREE.BoxGeometry(b.l,b.w,b.h);
-      const mat=new THREE.MeshLambertMaterial({color:col, transparent:true, opacity: op});
+      const geo=new THREE.BoxGeometry(b.l,b.h,b.w);
+      const mat=new THREE.MeshLambertMaterial({color:col, transparent:true, opacity: op, depthWrite: !ghost});
       const mesh=new THREE.Mesh(geo,mat);
-      mesh.position.set(b.x+b.l/2, b.y+b.w/2, b.z+b.h/2);
+      mesh.position.set(b.x+b.l/2, b.z+b.h/2, b.y+b.w/2);
       const e=new THREE.EdgesGeometry(geo);
       const wl=new THREE.LineSegments(e,new THREE.LineBasicMaterial({color:edgeCol, transparent:true, opacity:edgeOp}));
       mesh.add(wl);
@@ -1229,6 +2207,7 @@ function renderCurrent(){
     });
   }
   // 相机视角：优先对准高亮箱，否则对准整柜箱子群的包围盒
+  // 数据坐标→Three.js 映射 (x,y,z)→(x, z, y)：竖直=高、进深=宽
   let tgtPos, tgtTgt;
   if(anyHl && wbBoxes.length){
     const minX=Math.min(...wbBoxes.map(b=>b.x)), maxX=Math.max(...wbBoxes.map(b=>b.x+b.l));
@@ -1237,10 +2216,10 @@ function renderCurrent(){
     const cx=(minX+maxX)/2, cy=(minY+maxY)/2, cz=(minZ+maxZ)/2;
     const sz=Math.max(maxX-minX,maxY-minY,maxZ-minZ,1);
     const dist=currentSubid?1.1:1.6;
-    tgtPos=new THREE.Vector3(cx+sz*dist, cy+sz*(dist-0.2), cz+sz*dist);
-    tgtTgt=new THREE.Vector3(cx,cy,cz);
+    tgtPos=new THREE.Vector3(cx+sz*dist, cz+sz*(dist-0.2), cy+sz*dist);
+    tgtTgt=new THREE.Vector3(cx,cz,cy);
   } else {
-    // 计算当前柜所有箱子的实际包围盒
+    // 计算当前柜所有箱子的实际包围盒（数据坐标）
     let bx0=Infinity,by0=Infinity,bz0=Infinity,bx1=-Infinity,by1=-Infinity,bz1=-Infinity;
     boxes.forEach(b=>{
       bx0=Math.min(bx0,b.x); by0=Math.min(by0,b.y); bz0=Math.min(bz0,b.z);
@@ -1249,9 +2228,9 @@ function renderCurrent(){
     const cx=(bx0+bx1)/2, cy=(by0+by1)/2, cz=(bz0+bz1)/2;
     const cw=Math.max(bx1-bx0,1), cd=Math.max(by1-by0,1), ch=Math.max(bz1-bz0,1);
     const sz=Math.max(cw,cd,ch,1);
-    if(currentCam==='front'){ tgtPos=new THREE.Vector3(cx, cy-cd*1.5-cw*0.3, cz+ch*0.2); tgtTgt=new THREE.Vector3(cx,cy,cz); }
-    else if(currentCam==='top'){ tgtPos=new THREE.Vector3(cx, cy+cd*1.5+ch*0.3, cz); tgtTgt=new THREE.Vector3(cx,cy,cz); }
-    else { tgtPos=new THREE.Vector3(cx+sz*1.1, cy+sz*0.9, cz+sz*1.1); tgtTgt=new THREE.Vector3(cx,cy,cz); }
+    if(currentCam==='front'){ tgtPos=new THREE.Vector3(cx, cz+ch*0.2, cy-cd*1.5-cw*0.3); tgtTgt=new THREE.Vector3(cx,cz,cy); }
+    else if(currentCam==='top'){ tgtPos=new THREE.Vector3(cx, cz+ch*1.5+cd*0.3, cy+1); tgtTgt=new THREE.Vector3(cx,cz,cy); }
+    else { tgtPos=new THREE.Vector3(cx+sz*1.1, cz+sz*0.9, cy+sz*1.1); tgtTgt=new THREE.Vector3(cx,cz,cy); }
   }
   flyTo(tgtPos, tgtTgt, 550);
 }
@@ -1281,6 +2260,10 @@ function makeLabel(text, hex, hl){
   return sp;
 }
 function setCam(c){ currentCam=c; document.querySelectorAll('#viewbar button[data-type="cam"]').forEach(b=>{ b.classList.toggle('active', b.textContent===(c==='front'?'正视':c==='top'?'俯视':'透视')); }); if(scene) renderCurrent(); }
+function setOrderMode(v){
+  orderMode=(v==='v'||v==='z')?v:'h';
+  if(typeof currentCabIdx!=='undefined' && resultCabs.length) renderWarehouseGuide(currentCabIdx);
+}
 
 /* 初始化 */
 addRow();
